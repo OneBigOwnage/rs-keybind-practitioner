@@ -1,25 +1,49 @@
+/** @type {HTMLElement}  */
 let pressedButtonsContainer;
 
 
 const sequence = ['J', 'K', 'Q'];
 
-let GAME_STATE = {
-  requestedButtons: [],
-  firedButtons: [],
-};
+const initial = () => ({
+  ticks: 0,
+  requestedKeysForNextTick: [],
+  firedBindsThisTick: [],
+  bindSequence: [],
+});
+
+let GAME_STATE = initial();
 
 const draw = time => {
   if (pressedButtonsContainer) {
-    pressedButtonsContainer.textContent = GAME_STATE.firedButtons.join();
+    pressedButtonsContainer.innerHTML = GAME_STATE.bindSequence.map((bind, index) => {
+      if (sequence[index] == bind) {
+        return `<span style="color: green;">${bind}</span>`;
+      }
+
+      return `<span style="color: red;">${bind}</span>`;
+    }).join('\n');
   }
 
   window.requestAnimationFrame(draw);
 };
 
 const tick = () => {
-  GAME_STATE.firedButtons = [GAME_STATE.requestedButtons.reverse().pop()];
-  GAME_STATE.requestedButtons = [];
+  if (++GAME_STATE.ticks > sequence.length) {
 
+    restartSesh();
+
+    return;
+  }
+
+  GAME_STATE.firedBindsThisTick = [GAME_STATE.requestedKeysForNextTick.reverse().pop()]; // Some keys may be used simultaniously in one tick...
+  GAME_STATE.requestedKeysForNextTick = [];
+
+  GAME_STATE.bindSequence.push(GAME_STATE.firedBindsThisTick[0] || '(empty)');
+
+};
+
+const restartSesh = () => {
+  GAME_STATE = initial();
 };
 
 (() => {
@@ -48,7 +72,7 @@ const tick = () => {
 
     keyPhrase += ev.key.toUpperCase();
 
-    GAME_STATE.requestedButtons.push(keyPhrase);
+    GAME_STATE.requestedKeysForNextTick.push(keyPhrase);
   });
 
   window.requestAnimationFrame(draw);
