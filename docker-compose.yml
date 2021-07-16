@@ -1,11 +1,11 @@
 version: '3.0'
 
-
 services:
-    webserver:
-        image: nginx:latest
+    app:
+        image: node:16.5
         ports:
-            - "80:80"
+            - "4200:4200"
         volumes:
-            - ./app.conf:/etc/nginx/conf.d/app.conf
-            - .:/var/www
+            - ./:/app
+        working_dir: /app
+        entrypoint: tail -f "/dev/null"
