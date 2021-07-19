@@ -1,0 +1,51 @@
+<div class="global-cooldown">
+  <div>
+    <button (click)="showEdit()" class="icon-btn edit">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button (click)="remove()" class="icon-btn remove">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+
+  <div class="global-cooldown--keys">
+    <kbd *ngFor="let key of globalCooldown.anywhere">
+      {{ key }}
+    </kbd>
+  </div>
+
+  <div class="tick-perfect-inputs">
+    <div class="tick-perfect-inputs--first">
+      <kbd *ngFor="let key of globalCooldown.onFirstTick">
+        {{ key }}
+      </kbd>
+    </div>
+    <div class="tick-perfect-inputs--second">
+      <kbd *ngFor="let key of globalCooldown.onSecondTick">
+        {{ key }}
+      </kbd>
+    </div>
+    <div class="tick-perfect-inputs--third">
+      <kbd *ngFor="let key of globalCooldown.onThirdTick">
+        {{ key }}
+      </kbd>
+    </div>
+  </div>
+
+
+  <div class="global-cooldown--progress-bar-container">
+    <div class="global-cooldown--progress-bar progress"></div>
+    <div class="global-cooldown--progress-bar shrinker timelapse"></div>
+  </div>
+</div>
+
+<div class="dialog hidden" [attr.data-gcd-id]=globalCooldown.id>
+  <input [(ngModel)]="anywhere" type="text" placeholder="Anywhere within the GCD...">
+
+  <input [(ngModel)]="onFirstTick" type="text" placeholder="Specifically on the first tick of the GCD...">
+  <input [(ngModel)]="onSecondTick" type="text" placeholder="Specifically on the second tick of the GCD...">
+  <input [(ngModel)]="onThirdTick" type="text" placeholder="Specifically on the third tick of the GCD...">
+
+  <button (click)="hideEdit()">Cancel</button>
+  <button (click)="save()">Save</button>
+</div>
