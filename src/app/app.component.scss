@@ -1,0 +1,14 @@
+.gcd-container {
+  display: grid;
+  grid-template-columns: repeat(20, 1fr);
+  gap: 15px;
+}
+
+.add-global-cooldown-box {
+  width: 100px;
+  height: 100px;
+  border: black solid 1px;
+  position: relative;
+  border-radius: 3%;
+  overflow: hidden;
+}
