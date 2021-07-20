@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Delay } from './Delay';
 import { GlobalCooldown } from './GlobalCooldown';
 import { GlobalCooldownDataService } from './services/GlobalCooldownDataService';
+import { PractiseService } from './services/PractiseService';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,7 @@ import { GlobalCooldownDataService } from './services/GlobalCooldownDataService'
 })
 export class AppComponent {
 
-  constructor(public dataService: GlobalCooldownDataService) { }
+  constructor(public dataService: GlobalCooldownDataService, public practiseService: PractiseService) { }
 
   addGcd() {
     let id = Array.from(crypto.getRandomValues(new Uint8Array(20)), dec => dec.toString(16).padStart(2, "0")).join('');
@@ -30,6 +31,10 @@ export class AppComponent {
 
   isDelay(gcdOrDelay: GlobalCooldown | Delay): gcdOrDelay is Delay {
     return gcdOrDelay instanceof Delay;
+  }
+
+  start() {
+    this.practiseService.practise();
   }
 
 }

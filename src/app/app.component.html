@@ -7,11 +7,17 @@
   <div class="add-global-cooldown-box">
     <div>
       <button (click)="addGcd()">Add GCD</button>
-      <button (click)="waitTicks(1)">Wait 1 tick</button>
-      <button (click)="waitTicks(2)">Wait 2 ticks</button>
-      <button (click)="waitTicks(3)">Wait 3 ticks</button>
+      <!-- <button (click)="waitTicks(1)">Wait 1 tick</button>
+      <button (click)="waitTicks(2)">Wait 2 ticks</button> -->
+      <!-- <button (click)="waitTicks(3)">Wait 3 ticks</button> -->
+      <button (click)="start()">Start ticking</button>
     </div>
   </div>
 </div>
+
+<div>
+  {{ practiseService.output$ | async }}
+</div>
+
 
 <!-- <router-outlet></router-outlet> -->
