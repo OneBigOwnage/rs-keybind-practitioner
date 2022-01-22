@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { GlobalCooldownComponent } from './global-cooldown/global-cooldown.component';
 import { DelayComponent } from './delay/delay.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RunescapeModule } from './runescape/runescape.module';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FormsModule,
     BrowserAnimationsModule,
     MatIconModule,
+    RunescapeModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
