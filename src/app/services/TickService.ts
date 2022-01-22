@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { fromEvent, interval, merge, Observable, zip } from "rxjs";
 import { buffer, filter, map, tap } from 'rxjs/operators';
-import { Tick } from "../Tick";
+import { Tick } from "../runescape/Tick";
 
 @Injectable({ providedIn: 'root' })
 export class TickService {
@@ -33,7 +33,7 @@ export class TickService {
       .pipe(
         buffer(this.ticksOnly$),
         map((keysInTick) => {
-          return new Tick(this.tickNr, keysInTick);
+          return new Tick(this.tickNr, keysInTick, []);
         })
       );
   }

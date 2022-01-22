@@ -3,7 +3,7 @@ import { BehaviorSubject } from "rxjs";
 import { take } from "rxjs/operators";
 import { Delay } from "../Delay";
 import { GlobalCooldown } from "../GlobalCooldown";
-import { Tick } from "../Tick";
+import { Tick } from "../runescape/Tick";
 import { GlobalCooldownDataService } from "./GlobalCooldownDataService";
 import { TickService } from "./TickService";
 
@@ -26,7 +26,7 @@ export class PractiseService {
     this.output$.subscribe(console.log);
 
     this.tickService.ticks$.pipe(take(toPerform.length)).subscribe(tick => {
-      let toPerformInThisTick = toPerform[tick.nr];
+      let toPerformInThisTick = toPerform[tick.timestamp];
 
       if (this.areEqual(toPerformInThisTick, tick)) {
         this.output$.next('Good job!')
