@@ -1,23 +1,12 @@
 <div class="gcd-container">
-  <div *ngFor="let gcdOrDelay of dataService.rotation$ | async">
-    <app-global-cooldown *ngIf="isGlobalCooldown(gcdOrDelay)" [globalCooldown]="gcdOrDelay"></app-global-cooldown>
-    <app-delay *ngIf="isDelay(gcdOrDelay)" [delay]="gcdOrDelay"></app-delay>
-  </div>
 
   <div class="add-global-cooldown-box">
     <div>
-      <button (click)="addGcd()">Add GCD</button>
-      <!-- <button (click)="waitTicks(1)">Wait 1 tick</button>
-      <button (click)="waitTicks(2)">Wait 2 ticks</button> -->
-      <!-- <button (click)="waitTicks(3)">Wait 3 ticks</button> -->
-      <button (click)="start()">Start ticking</button>
+      <button (click)="start()">Start the game loop</button>
+      <button (click)="stop()">Stop the game loop</button>
     </div>
   </div>
 </div>
 
 <div>
-  {{ practiseService.output$ | async }}
 </div>
-
-
-<!-- <router-outlet></router-outlet> -->

@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
-import { Delay } from './Delay';
-import { GlobalCooldown } from './GlobalCooldown';
-import { GlobalCooldownDataService } from './services/GlobalCooldownDataService';
-import { PractiseService } from './services/PractiseService';
+import GameLoop from './runescape/GameLoop';
 
 @Component({
   selector: 'app-root',
@@ -11,30 +8,13 @@ import { PractiseService } from './services/PractiseService';
 })
 export class AppComponent {
 
-  constructor(public dataService: GlobalCooldownDataService, public practiseService: PractiseService) { }
-
-  addGcd() {
-    let id = Array.from(crypto.getRandomValues(new Uint8Array(20)), dec => dec.toString(16).padStart(2, "0")).join('');
-
-    this.dataService.add(new GlobalCooldown(id));
-  }
-
-  waitTicks(number: number) {
-    let id = Array.from(crypto.getRandomValues(new Uint8Array(20)), dec => dec.toString(16).padStart(2, "0")).join('');
-
-    this.dataService.add(new Delay(id, number));
-  }
-
-  isGlobalCooldown(gcdOrDelay: GlobalCooldown | Delay): gcdOrDelay is GlobalCooldown {
-    return gcdOrDelay instanceof GlobalCooldown;
-  }
-
-  isDelay(gcdOrDelay: GlobalCooldown | Delay): gcdOrDelay is Delay {
-    return gcdOrDelay instanceof Delay;
-  }
+  constructor(public game: GameLoop) { }
 
   start() {
-    this.practiseService.practise();
+    this.game.start();
   }
 
+  stop() {
+    this.game.stop();
+  }
 }
