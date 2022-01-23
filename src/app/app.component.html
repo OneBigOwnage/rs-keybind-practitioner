@@ -4,5 +4,5 @@
 </div>
 
 <div class="tick-container">
-  <app-tick *ngFor="let tick of game.ticks" [tick]="tick"></app-tick>
+  <app-tick *ngFor="let tick of game.ticks | async" [tick]="tick"></app-tick>
 </div>
