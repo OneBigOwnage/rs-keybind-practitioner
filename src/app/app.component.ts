@@ -8,6 +8,8 @@ import GameLoop from './runescape/GameLoop';
 })
 export class AppComponent {
 
+  showRotationBuilder: boolean = false;
+
   constructor(public game: GameLoop) { }
 
   start() {

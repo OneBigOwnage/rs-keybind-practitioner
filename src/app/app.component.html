@@ -2,7 +2,14 @@
   <div class="btn-container">
     <button (click)="start()">Start the game loop</button>
     <button (click)="stop()">Stop the game loop</button>
+    <button (click)="showRotationBuilder = !showRotationBuilder">
+      {{ showRotationBuilder ? 'Hide' : 'Show' }} rotation builder
+    </button>
   </div>
+
+  <app-rotation-builder *ngIf="showRotationBuilder"></app-rotation-builder>
+
+  <app-rotation *ngIf="!showRotationBuilder"></app-rotation>
 
   <div class="tick-container">
     <app-tick *ngFor="let tick of game.ticks | async" [tick]="tick"></app-tick>
