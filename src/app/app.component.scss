@@ -1,14 +1,17 @@
-.gcd-container {
-  display: grid;
-  grid-template-columns: repeat(20, 1fr);
-  gap: 15px;
+.btn-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 25px;
 }
 
-.add-global-cooldown-box {
-  width: 100px;
-  height: 100px;
-  border: black solid 1px;
-  position: relative;
-  border-radius: 3%;
-  overflow: hidden;
+.tick-container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
 }
