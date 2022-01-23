@@ -9,8 +9,7 @@ export default class GameLoop {
 
   protected requestID?: number;
 
-  protected ticks: Tick[] = [];
-
+  public ticks: Tick[] = [];
 
   start() {
     this.ticks = [];
@@ -21,9 +20,9 @@ export default class GameLoop {
   }
 
   stop() {
-    this.ticks = [];
+    // this.ticks = [];
 
-    if (this.requestID) {
+    if (this.requestID !== undefined) {
       window.cancelAnimationFrame(this.requestID);
     }
   }
@@ -39,7 +38,7 @@ export default class GameLoop {
   }
 
   protected registerKeyPressCallback() {
-    window.addEventListener("keypress", event => {
+    window.addEventListener("keydown", event => {
       event.preventDefault();
       event.stopPropagation();
 
