@@ -1,0 +1,13 @@
+<section class="rotation-builder">
+  <h3>Rotation builder</h3>
+
+  <div>
+    <button (click)="addTick()">Add new tick to rotation</button>
+  </div>
+
+  <div>
+    <app-editable-tick *ngFor="let tick of repo.rotation | async" [tick]="tick" (onChange)="updateTick(tick)"
+      (onDelete)="removeTick(tick)">
+    </app-editable-tick>
+  </div>
+</section>

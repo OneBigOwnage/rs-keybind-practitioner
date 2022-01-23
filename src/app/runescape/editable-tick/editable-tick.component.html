@@ -1,0 +1,17 @@
+<div *ngIf="tick !== undefined" class="editable-tick">
+
+  <div *ngFor="let key of tick.keyPresses; let index = index">
+    <kbd class="kbc-button">{{ key }}</kbd>
+    <input *ngIf="editingKeyStrokeIndex === index" [(ngModel)]="editingKeyStroke" type="text">
+    <button *ngIf="editingKeyStrokeIndex === -1" (click)="startEditing(key, index)">Edit</button>
+    <button *ngIf="editingKeyStrokeIndex === index" (click)="stopEditing()">Save</button>
+    <button (click)="onRemove(index)">Remove</button>
+  </div>
+
+  <div>
+    <input [(ngModel)]="newKeyStroke" type="text">
+    <button (click)="onAdd()">Add keystroke</button>
+    <button (click)="onDelete.emit(tick)">Remove tick</button>
+  </div>
+
+</div>

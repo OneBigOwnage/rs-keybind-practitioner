@@ -1,0 +1,5 @@
+<section>
+  <ng-container *ngFor="let tick of repo.rotation | async">
+    <kbd *ngFor="let key of tick.keyPresses" class="kbc-button">{{ key }}</kbd>
+  </ng-container>
+</section>

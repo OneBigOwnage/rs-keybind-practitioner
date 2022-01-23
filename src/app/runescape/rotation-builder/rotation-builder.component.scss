@@ -1,0 +1,28 @@
+.rotation-builder {
+  background-color: #f3f3f3;
+  border-radius: 1px;
+  border: 1px solid #5f5f5f;
+
+  padding: 5px;
+  width: 350px;
+}
+
+kbd.kbc-button {
+  cursor: pointer;
+  &:not(:last-child) {
+    margin-right: 12px;
+  }
+}
+
+.rotation-tick {
+  border: black solid 1px;
+  padding: 3px;
+
+  &:first-child {
+    margin-top: 7px;
+  }
+
+  &:not(:last-child) {
+    margin-bottom: 7px;
+  }
+}
