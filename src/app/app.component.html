@@ -1,5 +1,6 @@
 <main>
   <div class="btn-container">
+    <button (click)="loadRotation()">Load known rotation</button>
     <button (click)="start()">Start the game loop</button>
     <button (click)="stop()">Stop the game loop</button>
     <button (click)="showRotationBuilder = !showRotationBuilder">
@@ -9,7 +10,9 @@
 
   <app-rotation-builder *ngIf="showRotationBuilder"></app-rotation-builder>
 
-  <app-rotation *ngIf="!showRotationBuilder"></app-rotation>
+  <div class="rotation-container">
+    <app-rotation *ngIf="!showRotationBuilder"></app-rotation>
+  </div>
 
   <div class="tick-container">
     <app-tick *ngFor="let tick of game.ticks | async" [tick]="tick"></app-tick>
