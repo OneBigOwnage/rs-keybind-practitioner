@@ -1,10 +1,9 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import KeypressPrettifier from "./KeypressPrettifier";
-import { RunescapeModule } from "./runescape.module";
 import { Tick } from "./Tick";
 
-@Injectable({ providedIn: RunescapeModule })
+@Injectable({ providedIn: "root" })
 export default class GameLoop {
 
   public readonly tickLengthInMs: number = 600;

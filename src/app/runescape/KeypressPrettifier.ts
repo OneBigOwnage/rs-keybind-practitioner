@@ -1,8 +1,7 @@
 import { Injectable } from "@angular/core";
 import { RunescapeModule } from "./runescape.module";
 
-
-@Injectable({ providedIn: RunescapeModule })
+@Injectable({ providedIn: "root" })
 export default class KeypressPrettifier {
 
   extractKey(event: KeyboardEvent): string {
