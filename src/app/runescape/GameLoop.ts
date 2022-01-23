@@ -1,4 +1,5 @@
-import { Inject, Injectable } from "@angular/core";
+import { Injectable } from "@angular/core";
+import { BehaviorSubject } from "rxjs";
 import { RunescapeModule } from "./runescape.module";
 import { Tick } from "./Tick";
 
@@ -9,10 +10,10 @@ export default class GameLoop {
 
   protected requestID?: number;
 
-  public ticks: Tick[] = [];
+  public ticks: BehaviorSubject<Tick[]> = new BehaviorSubject([] as Tick[]);
 
   start() {
-    this.ticks = [];
+    this.ticks = new BehaviorSubject([] as Tick[]);
     this.requestID = window.requestAnimationFrame(this.loop.bind(this));
 
     this.registerKeyPressCallback();
@@ -20,18 +21,21 @@ export default class GameLoop {
   }
 
   stop() {
-    // this.ticks = [];
-
     if (this.requestID !== undefined) {
       window.cancelAnimationFrame(this.requestID);
     }
   }
 
   loop(timestamp: number) {
-    if (this.ticks.length === 0 || timestamp - this.ticks[this.ticks.length - 1].timestamp > this.tickLengthInMs) {
-      this.ticks.push(new Tick(timestamp, [], []));
+    let ticks = this.ticks.value;
+    let latestTick = ticks[ticks.length - 1];
 
-      console.log('Adding a new tick. Last tick looked like this:', this.ticks[this.ticks.length - 2]);
+    if (ticks.length === 0 || timestamp - latestTick.timestamp > this.tickLengthInMs) {
+      ticks.push(new Tick(timestamp, [], []));
+
+      this.ticks.next(ticks);
+
+      console.log('Adding a new tick. Last tick looked like this:', this.ticks.value[this.ticks.value.length - 2]);
     }
 
     this.requestID = window.requestAnimationFrame(this.loop.bind(this));
@@ -44,11 +48,16 @@ export default class GameLoop {
 
       let key = this.extractKey(event);
 
-      if (this.ticks.length === 0) {
+      if (this.ticks.value.length === 0) {
         return;
       }
 
-      this.ticks[this.ticks.length - 1].keyPresses.push(key);
+      let ticks = this.ticks.value;
+      let tick = this.ticks.value[this.ticks.value.length - 1];
+      tick.keyPresses.push(key);
+      ticks[ticks.length - 1] = tick;
+
+      this.ticks.next(ticks);
     });
   }
 
@@ -75,14 +84,16 @@ export default class GameLoop {
       event.preventDefault();
       event.stopPropagation();
 
-      if (this.ticks.length === 0) {
+      if (this.ticks.value.length === 0) {
         return;
       }
 
-      this.ticks[this.ticks.length - 1].clicks.push({
-        x: event.clientX,
-        y: event.clientY
-      });
+      let ticks = this.ticks.value;
+      let tick = this.ticks.value[this.ticks.value.length - 1];
+      tick.clicks.push({ x: event.clientX, y: event.clientY });
+      ticks[ticks.length - 1] = tick;
+
+      this.ticks.next(ticks);
     });
   }
 }
