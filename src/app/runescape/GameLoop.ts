@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
+import KeypressPrettifier from "./KeypressPrettifier";
 import { RunescapeModule } from "./runescape.module";
 import { Tick } from "./Tick";
 
@@ -11,6 +12,8 @@ export default class GameLoop {
   protected requestID?: number;
 
   public ticks: BehaviorSubject<Tick[]> = new BehaviorSubject([] as Tick[]);
+
+  constructor(protected prettifier: KeypressPrettifier) { }
 
   start() {
     this.ticks = new BehaviorSubject([] as Tick[]);
@@ -34,8 +37,6 @@ export default class GameLoop {
       ticks.push(new Tick(timestamp, [], []));
 
       this.ticks.next(ticks);
-
-      console.log('Adding a new tick. Last tick looked like this:', this.ticks.value[this.ticks.value.length - 2]);
     }
 
     this.requestID = window.requestAnimationFrame(this.loop.bind(this));
@@ -46,14 +47,15 @@ export default class GameLoop {
       event.preventDefault();
       event.stopPropagation();
 
-      let key = this.extractKey(event);
+      let key = this.prettifier.extractKey(event);
 
-      if (this.ticks.value.length === 0) {
+      if (!this.shouldRecordKeystroke(key, event)) {
         return;
       }
 
       let ticks = this.ticks.value;
-      let tick = this.ticks.value[this.ticks.value.length - 1];
+      let tick = this.ticks.value[ticks.length - 1];
+
       tick.keyPresses.push(key);
       ticks[ticks.length - 1] = tick;
 
@@ -61,22 +63,16 @@ export default class GameLoop {
     });
   }
 
-  protected extractKey(event: KeyboardEvent): string {
-    let key = '';
-
-    if (event.ctrlKey) {
-      key += 'CTRL-';
+  protected shouldRecordKeystroke(key: string, event: KeyboardEvent): boolean {
+    if (this.ticks.value.length === 0) {
+      return false;
     }
 
-    if (event.altKey) {
-      key += 'ALT-';
+    if (['Control', 'Alt', 'Shift'].includes(event.key)) {
+      return false;
     }
 
-    if (event.shiftKey) {
-      key += 'SHIFT-';
-    }
-
-    return key + event.key.toUpperCase();
+    return true;
   }
 
   protected registerMouseClickCallback() {
