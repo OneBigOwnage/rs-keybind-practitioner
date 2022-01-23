@@ -1,4 +1,4 @@
-FROM node:16.5
+FROM node:16.10
 
 RUN npm install -g @angular/cli
 
