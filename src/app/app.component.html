@@ -1,8 +1,10 @@
-<div class="btn-container">
-  <button (click)="start()">Start the game loop</button>
-  <button (click)="stop()">Stop the game loop</button>
-</div>
+<main>
+  <div class="btn-container">
+    <button (click)="start()">Start the game loop</button>
+    <button (click)="stop()">Stop the game loop</button>
+  </div>
 
-<div class="tick-container">
-  <app-tick *ngFor="let tick of game.ticks | async" [tick]="tick"></app-tick>
-</div>
+  <div class="tick-container">
+    <app-tick *ngFor="let tick of game.ticks | async" [tick]="tick"></app-tick>
+  </div>
+</main>
