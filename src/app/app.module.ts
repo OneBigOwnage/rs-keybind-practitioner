@@ -5,16 +5,12 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { GlobalCooldownComponent } from './global-cooldown/global-cooldown.component';
-import { DelayComponent } from './delay/delay.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RunescapeModule } from './runescape/runescape.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    GlobalCooldownComponent,
-    DelayComponent
   ],
   imports: [
     BrowserModule,
