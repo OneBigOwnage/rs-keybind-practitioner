@@ -11,12 +11,12 @@ export default class GameLoop {
 
   protected requestID?: number;
 
-  public ticks: BehaviorSubject<Tick[]> = new BehaviorSubject([] as Tick[]);
+  public ticks: BehaviorSubject<Tick[]> = new BehaviorSubject<Tick[]>([]);
 
   constructor(protected prettifier: KeypressPrettifier) { }
 
   start() {
-    this.ticks = new BehaviorSubject([] as Tick[]);
+    this.ticks = new BehaviorSubject<Tick[]>([]);
     this.requestID = window.requestAnimationFrame(this.loop.bind(this));
 
     this.registerKeyPressCallback();
