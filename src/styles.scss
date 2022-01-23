@@ -1,15 +1,23 @@
+@import 'keyboard-css';
+
 .hidden {
   display: none;
 }
 
 html,
 body {
-  height: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.no-select {
+  user-select: none;
 }
 
 .icon-btn {
