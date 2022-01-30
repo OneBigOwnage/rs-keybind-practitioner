@@ -22,21 +22,30 @@ export default class GameLoop {
    */
   protected requestID?: number;
 
+  protected boundOnKeyPress = this.onKeyPress.bind(this);
+
+  protected boundOnClick = this.onClick.bind(this);
+
   constructor(protected prettifier: KeypressPrettifier) { }
 
   start() {
-    this.epoch = performance.now();
-    this.ticks = new BehaviorSubject<Tick[]>([]);
+    this.reset();
     this.requestID = window.requestAnimationFrame(this.loop.bind(this));
 
-    this.registerKeyPressCallback();
-    this.registerMouseClickCallback();
+    this.registerEventListeners();
   }
 
   stop() {
+    this.unregisterEventListeners();
+
     if (this.requestID !== undefined) {
       window.cancelAnimationFrame(this.requestID);
     }
+  }
+
+  reset() {
+    this.epoch = performance.now();
+    this.ticks = new BehaviorSubject<Tick[]>([]);
   }
 
   loop(timestamp: number) {
@@ -56,25 +65,49 @@ export default class GameLoop {
     this.requestID = window.requestAnimationFrame(this.loop.bind(this));
   }
 
-  protected registerKeyPressCallback() {
-    window.addEventListener("keydown", event => {
-      event.preventDefault();
-      event.stopPropagation();
+  protected registerEventListeners() {
+    window.addEventListener("keydown", this.boundOnKeyPress);
+    window.addEventListener("click", this.boundOnClick);
+  }
 
-      let key = this.prettifier.extractKey(event);
+  protected unregisterEventListeners() {
+    window.removeEventListener("keydown", this.boundOnKeyPress);
+    window.removeEventListener("click", this.boundOnClick);
+  }
 
-      if (!this.shouldRecordKeystroke(key, event)) {
-        return;
-      }
+  protected onKeyPress(event: KeyboardEvent) {
+    event.preventDefault();
+    event.stopPropagation();
 
-      let ticks = this.ticks.value;
-      let tick = this.ticks.value[ticks.length - 1];
+    let key = this.prettifier.extractKey(event);
 
-      tick.keyPresses.push(key);
-      ticks[ticks.length - 1] = tick;
+    if (!this.shouldRecordKeystroke(key, event)) {
+      return;
+    }
 
-      this.ticks.next(ticks);
-    });
+    let ticks = this.ticks.value;
+    let tick = this.ticks.value[ticks.length - 1];
+
+    tick.keyPresses.push(key);
+    ticks[ticks.length - 1] = tick;
+
+    this.ticks.next(ticks);
+  }
+
+  protected onClick(event: MouseEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (this.ticks.value.length === 0) {
+      return;
+    }
+
+    let ticks = this.ticks.value;
+    let tick = this.ticks.value[this.ticks.value.length - 1];
+    tick.clicks.push({ x: event.clientX, y: event.clientY });
+    ticks[ticks.length - 1] = tick;
+
+    this.ticks.next(ticks);
   }
 
   protected shouldRecordKeystroke(key: string, event: KeyboardEvent): boolean {
@@ -87,23 +120,5 @@ export default class GameLoop {
     }
 
     return true;
-  }
-
-  protected registerMouseClickCallback() {
-    window.addEventListener("click", event => {
-      event.preventDefault();
-      event.stopPropagation();
-
-      if (this.ticks.value.length === 0) {
-        return;
-      }
-
-      let ticks = this.ticks.value;
-      let tick = this.ticks.value[this.ticks.value.length - 1];
-      tick.clicks.push({ x: event.clientX, y: event.clientY });
-      ticks[ticks.length - 1] = tick;
-
-      this.ticks.next(ticks);
-    });
   }
 }
