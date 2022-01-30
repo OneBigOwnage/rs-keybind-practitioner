@@ -14,8 +14,8 @@ export class AppComponent implements OnInit {
 
   percentage = 0;
 
-  constructor(public game: GameLoop, public repo: RotationRepository) {
-    this.game.emitter.subscribe((percentage) => this.percentage = percentage);
+  constructor(public loop: GameLoop, public repo: RotationRepository) {
+    this.loop.emitter.subscribe((percentage) => this.percentage = percentage);
   }
 
   ngOnInit() {
@@ -23,11 +23,11 @@ export class AppComponent implements OnInit {
   }
 
   start() {
-    this.game.start();
+    this.loop.start();
   }
 
   stop() {
-    this.game.stop();
+    this.loop.stop();
   }
 
   loadRotation() {
