@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TickComponent } from './tick/tick.component';
 import { RotationBuilderComponent } from './rotation-builder/rotation-builder.component';
 import { RotationComponent } from './rotation/rotation.component';
 import { FormsModule } from '@angular/forms';
@@ -11,7 +10,6 @@ import { ActualTickComponent } from './actual-tick/actual-tick.component';
 
 @NgModule({
   declarations: [
-    TickComponent,
     RotationBuilderComponent,
     RotationComponent,
     EditableTickComponent,
@@ -24,7 +22,6 @@ import { ActualTickComponent } from './actual-tick/actual-tick.component';
     FormsModule,
   ],
   exports: [
-    TickComponent,
     RotationBuilderComponent,
     RotationComponent,
     EditableTickComponent,
