@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { PlannedTick } from '../PlannedTick';
-import RotationRepository from '../RotationRepository';
+import RotationRepository from '../RotationRepository.service';
 
 @Component({
   selector: 'app-rotation-builder',

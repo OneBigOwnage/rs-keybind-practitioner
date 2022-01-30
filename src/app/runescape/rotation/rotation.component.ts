@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import RotationRepository from '../RotationRepository';
+import RotationRepository from '../RotationRepository.service';
 
 @Component({
   selector: 'app-rotation',

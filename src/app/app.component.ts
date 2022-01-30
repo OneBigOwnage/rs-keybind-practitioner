@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { tick } from '@angular/core/testing';
 import { ActualTick } from './runescape/ActualTick';
-import Comparator from './runescape/Comparator';
-import GameLoop from './runescape/GameLoop';
+import Comparator from './runescape/Comparator.service';
+import GameLoop from './runescape/GameLoop.service';
 import { PlannedTick } from './runescape/PlannedTick';
 import ResultSet from './runescape/ResultSet';
-import RotationRepository from './runescape/RotationRepository';
+import RotationRepository from './runescape/RotationRepository.service';
 
 @Component({
   selector: 'app-root',

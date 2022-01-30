@@ -1,8 +1,8 @@
 import { EventEmitter, Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import { ActualTick } from "./ActualTick";
-import KeypressPrettifier from "./KeypressPrettifier";
-import RotationRepository from "./RotationRepository";
+import KeypressPrettifier from "./KeypressPrettifier.service";
+import RotationRepository from "./RotationRepository.service";
 
 @Injectable({ providedIn: "root" })
 export default class GameLoop {
