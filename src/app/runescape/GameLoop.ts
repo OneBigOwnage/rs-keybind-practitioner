@@ -51,10 +51,12 @@ export default class GameLoop {
   loop(timestamp: number) {
     timestamp = timestamp - this.epoch;
 
+    let globalCoolDownLength = this.tickLengthInMs * 3;
+
+    this.emitter.emit(timestamp % globalCoolDownLength / globalCoolDownLength * 100);
+
     let ticks = this.ticks.value;
     let latestTick = ticks[ticks.length - 1];
-
-    this.emitter.emit(timestamp % this.tickLengthInMs / this.tickLengthInMs * 100);
 
     if (ticks.length === 0 || timestamp - latestTick.timestamp >= this.tickLengthInMs) {
       ticks.push(new Tick(timestamp, [], []));
