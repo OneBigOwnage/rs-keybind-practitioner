@@ -17,6 +17,6 @@
   </div>
 
   <div class="tick-container">
-    <app-actual-tick *ngFor="let tick of loop.ticks | async" [tick]="tick"></app-actual-tick>
+    <app-actual-tick *ngFor="let tick of loop.ticks | async" [tick]="tick" [resultset]="getResultSet(tick)"></app-actual-tick>
   </div>
 </main>

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { PlannedTick } from '../PlannedTick';
 import RotationRepository from '../RotationRepository';
-import { Tick } from '../Tick';
 
 @Component({
   selector: 'app-rotation-builder',
@@ -17,12 +17,12 @@ export class RotationBuilderComponent implements OnInit {
   addTick() {
     let ticks = this.repo.rotation.value;
 
-    ticks.push(new Tick(Date.now(), [], []));
+    ticks.push(new PlannedTick(this.hash(), [], []));
 
     this.repo.rotation.next(ticks);
   }
 
-  updateTick(tick: Tick) {
+  updateTick(tick: PlannedTick) {
     let ticks = this.repo.rotation.value;
 
     ticks[ticks.indexOf(tick)] = tick;
@@ -30,12 +30,17 @@ export class RotationBuilderComponent implements OnInit {
     this.repo.rotation.next(ticks);
   }
 
-  removeTick(tick: Tick) {
+  removeTick(tick: PlannedTick) {
     let ticks = this.repo.rotation.value;
 
     ticks.splice(ticks.indexOf(tick), 1);
 
     this.repo.rotation.next(ticks);
+  }
+
+  hash() {
+    return Math.random().toString(36).substring(2, 15)
+      + Math.random().toString(36).substring(2, 15);
   }
 
   // saveKeyStroke() {

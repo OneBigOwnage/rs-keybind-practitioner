@@ -1,14 +1,15 @@
 import { EventEmitter, Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
+import { ActualTick } from "./ActualTick";
 import KeypressPrettifier from "./KeypressPrettifier";
-import { Tick } from "./Tick";
+import RotationRepository from "./RotationRepository";
 
 @Injectable({ providedIn: "root" })
 export default class GameLoop {
 
   public readonly tickLengthInMs: number = 600;
 
-  public ticks: BehaviorSubject<Tick[]> = new BehaviorSubject<Tick[]>([]);
+  public ticks: BehaviorSubject<ActualTick[]> = new BehaviorSubject<ActualTick[]>([]);
 
   public emitter = new EventEmitter<number>();
 
@@ -32,7 +33,7 @@ export default class GameLoop {
    */
   protected boundOnClick = this.onClick.bind(this);
 
-  constructor(protected prettifier: KeypressPrettifier) { }
+  constructor(protected prettifier: KeypressPrettifier, public repo: RotationRepository) { }
 
   start() {
     this.reset();
@@ -51,7 +52,7 @@ export default class GameLoop {
 
   reset() {
     this.epoch = performance.now();
-    this.ticks = new BehaviorSubject<Tick[]>([]);
+    this.ticks = new BehaviorSubject<ActualTick[]>([]);
   }
 
   loop(timestamp: number) {
@@ -65,7 +66,7 @@ export default class GameLoop {
     let latestTick = ticks[ticks.length - 1];
 
     if (ticks.length === 0 || timestamp - latestTick.timestamp >= this.tickLengthInMs) {
-      ticks.push(new Tick(timestamp, [], []));
+      ticks.push(new ActualTick(this.hash(ticks.length), timestamp, [], []));
 
       this.ticks.next(ticks);
     }
@@ -128,5 +129,18 @@ export default class GameLoop {
     }
 
     return true;
+  }
+
+  hash(index: number) {
+    // If the index exists in the repository, we use the existing ID.
+    // Otherwise, we create a new ID.
+    if (this.repo.rotation.value.length > index) {
+      console.log('Using existing ID.');
+
+      return this.repo.rotation.value[index].ID;
+    }
+
+    return Math.random().toString(36).substring(2, 15)
+      + Math.random().toString(36).substring(2, 15);
   }
 }

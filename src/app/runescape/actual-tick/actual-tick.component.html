@@ -1,5 +1,6 @@
-<ng-template [ngIf]="tick">
-  <div class="app-tick no-select">
-    <kbd *ngFor="let key of tick.keyPresses" class="kbc-button">{{ key }}</kbd>
+<ng-template [ngIf]="tick && resultset">
+  <div class="app-actual-tick no-select">
+    <kbd *ngFor="let key of resultset.correctKeyPresses" class="kbc-button kbc-button-success">{{ key }}</kbd>
+    <kbd *ngFor="let key of resultset.incorrectKeyPresses" class="kbc-button kbc-button-danger">{{ key }}</kbd>
   </div>
 </ng-template>

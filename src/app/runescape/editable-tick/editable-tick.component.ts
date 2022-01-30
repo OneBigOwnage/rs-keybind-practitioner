@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Tick } from '../Tick';
+import { PlannedTick } from '../PlannedTick';
 
 @Component({
   selector: 'app-editable-tick',
@@ -9,13 +9,13 @@ import { Tick } from '../Tick';
 export class EditableTickComponent implements OnInit {
 
   @Input()
-  tick?: Tick;
+  tick?: PlannedTick;
 
   @Output()
-  onChange = new EventEmitter<Tick>();
+  onChange = new EventEmitter<PlannedTick>();
 
   @Output()
-  onDelete = new EventEmitter<Tick>();
+  onDelete = new EventEmitter<PlannedTick>();
 
   newKeyStroke = '';
 

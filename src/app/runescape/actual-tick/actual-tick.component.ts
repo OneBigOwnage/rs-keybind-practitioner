@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActualTick } from '../ActualTick';
 import ResultSet from '../ResultSet';
-import { Tick } from '../Tick';
 
 @Component({
   selector: 'app-actual-tick',
@@ -10,7 +10,7 @@ import { Tick } from '../Tick';
 export class ActualTickComponent implements OnInit {
 
   @Input()
-  tick?: Tick;
+  tick?: ActualTick;
 
   @Input()
   resultset?: ResultSet;

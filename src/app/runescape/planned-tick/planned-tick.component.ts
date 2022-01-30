@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { PlannedTick } from '../PlannedTick';
 
 @Component({
   selector: 'app-planned-tick',
@@ -6,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./planned-tick.component.scss']
 })
 export class PlannedTickComponent implements OnInit {
+
+  @Input()
+  tick?: PlannedTick;
 
   constructor() { }
 
