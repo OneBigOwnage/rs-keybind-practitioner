@@ -5,6 +5,7 @@ import { RotationBuilderComponent } from './rotation-builder/rotation-builder.co
 import { RotationComponent } from './rotation/rotation.component';
 import { FormsModule } from '@angular/forms';
 import { EditableTickComponent } from './editable-tick/editable-tick.component';
+import { TimeVisualizerComponent } from './time-visualizer/time-visualizer.component';
 
 @NgModule({
   declarations: [
@@ -12,11 +13,18 @@ import { EditableTickComponent } from './editable-tick/editable-tick.component';
     RotationBuilderComponent,
     RotationComponent,
     EditableTickComponent,
+    TimeVisualizerComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
   ],
-  exports: [TickComponent, RotationBuilderComponent, RotationComponent, EditableTickComponent],
+  exports: [
+    TickComponent,
+    RotationBuilderComponent,
+    RotationComponent,
+    EditableTickComponent,
+    TimeVisualizerComponent,
+  ],
 })
 export class RunescapeModule { }
