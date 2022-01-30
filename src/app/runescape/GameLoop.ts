@@ -22,8 +22,14 @@ export default class GameLoop {
    */
   protected requestID?: number;
 
+  /**
+   * We need a bound method to be able to remove the event listeners.
+   */
   protected boundOnKeyPress = this.onKeyPress.bind(this);
 
+  /**
+   * We need a bound method to be able to remove the event listeners.
+   */
   protected boundOnClick = this.onClick.bind(this);
 
   constructor(protected prettifier: KeypressPrettifier) { }
