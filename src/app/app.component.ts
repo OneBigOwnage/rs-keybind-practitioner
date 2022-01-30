@@ -12,7 +12,11 @@ export class AppComponent implements OnInit {
 
   showRotationBuilder: boolean = false;
 
-  constructor(public game: GameLoop, public repo: RotationRepository) { }
+  percentage = 0;
+
+  constructor(public game: GameLoop, public repo: RotationRepository) {
+    this.game.emitter.subscribe((percentage) => this.percentage = percentage);
+  }
 
   ngOnInit() {
     this.loadRotation();
