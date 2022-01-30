@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { EventEmitter, Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import KeypressPrettifier from "./KeypressPrettifier";
 import { Tick } from "./Tick";
@@ -8,13 +8,24 @@ export default class GameLoop {
 
   public readonly tickLengthInMs: number = 600;
 
-  protected requestID?: number;
-
   public ticks: BehaviorSubject<Tick[]> = new BehaviorSubject<Tick[]>([]);
+
+  public emitter = new EventEmitter<number>();
+
+  /**
+   * The epoch is the time when the game loop started.
+   */
+  protected epoch: number = performance.now();
+
+  /**
+   * The requestAnimationFrame ID.
+   */
+  protected requestID?: number;
 
   constructor(protected prettifier: KeypressPrettifier) { }
 
   start() {
+    this.epoch = performance.now();
     this.ticks = new BehaviorSubject<Tick[]>([]);
     this.requestID = window.requestAnimationFrame(this.loop.bind(this));
 
@@ -29,10 +40,14 @@ export default class GameLoop {
   }
 
   loop(timestamp: number) {
+    timestamp = timestamp - this.epoch;
+
     let ticks = this.ticks.value;
     let latestTick = ticks[ticks.length - 1];
 
-    if (ticks.length === 0 || timestamp - latestTick.timestamp > this.tickLengthInMs) {
+    this.emitter.emit(timestamp % this.tickLengthInMs / this.tickLengthInMs * 100);
+
+    if (ticks.length === 0 || timestamp - latestTick.timestamp >= this.tickLengthInMs) {
       ticks.push(new Tick(timestamp, [], []));
 
       this.ticks.next(ticks);
