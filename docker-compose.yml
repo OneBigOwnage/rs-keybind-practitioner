@@ -1,14 +1,14 @@
 version: '3.0'
 
 services:
-    app:
-        build:
-          context: .
-          args:
-            USER: ${USER}
-        ports:
-            - "4200:4200"
-        volumes:
-            - ./:/app
-        working_dir: /app
-        entrypoint: tail -f "/dev/null"
+  app:
+    build:
+      context: .
+      args:
+        USER: ${USER}
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./:/app
+    working_dir: /app
+    entrypoint: tail -f "/dev/null"
