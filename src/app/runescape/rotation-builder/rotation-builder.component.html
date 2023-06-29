@@ -5,9 +5,6 @@
     <button (click)="addTick()">Add new tick to rotation</button>
   </div>
 
-  <div>
-    <app-editable-tick *ngFor="let tick of repo.rotation | async" [tick]="tick" (onChange)="updateTick(tick)"
-      (onDelete)="removeTick(tick)">
-    </app-editable-tick>
-  </div>
+  <app-rotation-builder-tick *ngFor="let tick of this.repo.rotation$() | async; index as index;" [tick]="tick"
+    (onEdit)="this.updateTick(index, tick)" (onDelete)="this.removeTick(index)"></app-rotation-builder-tick>
 </section>
