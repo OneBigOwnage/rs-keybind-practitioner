@@ -6,6 +6,7 @@ import { PlannedTick } from '../PlannedTick';
   templateUrl: './editable-tick.component.html',
   styleUrls: ['./editable-tick.component.scss']
 })
+/** @deprecated Use RotationBuilderTickComponent instead */
 export class EditableTickComponent implements OnInit {
 
   @Input()
