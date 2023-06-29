@@ -30,6 +30,10 @@ export type RecordedInteraction =
 
 export class Tick {
   constructor (public interactions: Interaction[] = []) { }
+
+  public toString(): string {
+    return this.interactions.map(interaction => interaction.key).join(' ');
+  }
 }
 
 export function tickFactory(input: string = ''): Tick {
