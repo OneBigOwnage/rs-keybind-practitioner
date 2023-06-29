@@ -8,9 +8,14 @@
     </button>
   </div>
 
-  <app-time-visualizer [value]="percentage"></app-time-visualizer>
+  <!-- <app-time-visualizer [value]="percentage"></app-time-visualizer> -->
 
   <app-rotation-builder *ngIf="showRotationBuilder"></app-rotation-builder>
 
+  <div style="display: grid; grid-template-columns: 3fr 1fr 3fr;">
+    <div style="justify-self: end;">Previous ticks</div>
+    <div style="justify-self: center;">Current tick</div>
+    <div style="justify-self: start;">Upcoming ticks</div>
+  </div>
   <app-input-tracker></app-input-tracker>
 </main>
