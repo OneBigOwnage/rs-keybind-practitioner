@@ -5,3 +5,28 @@
   padding-left: 10px;
   padding-right: 10px;
 }
+
+app-input-tracker-tick {
+  justify-self: stretch;
+  border: 1px solid black;
+  height: 100px;
+}
+
+app-input-tracker-tick[context="PREVIOUS"] {
+  background-color: #ff5e5e;
+}
+
+app-input-tracker-tick[context="CURRENT"] {
+  background-color: #1c79ca;
+  grid-column-start: 4;
+}
+
+app-input-tracker-tick[context="UPCOMING"] {
+  background-color: #fff652;
+  grid-column-start: 5;
+}
+
+// We only want the first upcoming tick to start at 5, the others should flow after it
+app-input-tracker-tick[context="UPCOMING"]~app-input-tracker-tick[context="UPCOMING"] {
+  grid-column-start: unset;
+}
