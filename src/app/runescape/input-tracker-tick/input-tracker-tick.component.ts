@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Tick } from '../Interactions';
+import { Interaction, MissedKeyPress, SuccessfulKeyPress, Tick, UnexpectedKeyPress } from '../Interactions';
 
 export type InputTrackerTickContextType = 'PREVIOUS' | 'CURRENT' | 'UPCOMING';
 
@@ -21,4 +21,15 @@ export class InputTrackerTickComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  public isSuccessful(interaction: Interaction): boolean {
+    return interaction instanceof SuccessfulKeyPress;
+  }
+
+  public isUnexpected(interaction: Interaction): boolean {
+    return interaction instanceof UnexpectedKeyPress;
+  }
+
+  public isMissed(interaction: Interaction): boolean {
+    return interaction instanceof MissedKeyPress;
+  }
 }
