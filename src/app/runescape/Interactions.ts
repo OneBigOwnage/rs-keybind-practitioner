@@ -37,5 +37,5 @@ export class Tick {
 }
 
 export function tickFactory(input: string = ''): Tick {
-  return new Tick(input.split(' ').map(key => new ShouldPressKey(key)));
+  return new Tick(input.split(' ').filter(k => k !== '').map(key => new ShouldPressKey(key)));
 }
