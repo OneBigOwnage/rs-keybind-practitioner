@@ -24,6 +24,9 @@ export class InputHandler {
 
   protected registerListeners() {
     document.addEventListener('keydown', (event: KeyboardEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+
       if (!this.shouldRecordKeystroke(event)) {
         return;
       }
