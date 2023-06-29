@@ -27,6 +27,13 @@ export class InputHandler {
       event.preventDefault();
       event.stopPropagation();
 
+      return false;
+    });
+
+    document.addEventListener('keyup', (event: KeyboardEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+
       if (!this.shouldRecordKeystroke(event)) {
         return;
       }
