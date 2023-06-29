@@ -9,6 +9,7 @@ import { ActualTickComponent } from './actual-tick/actual-tick.component';
 import { MatIconModule } from '@angular/material/icon';
 import { InputTrackerComponent } from './input-tracker/input-tracker.component';
 import { InputTrackerTickComponent } from './input-tracker-tick/input-tracker-tick.component';
+import { RotationBuilderTickComponent } from './rotation-builder-tick/rotation-builder-tick.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { InputTrackerTickComponent } from './input-tracker-tick/input-tracker-ti
     ActualTickComponent,
     InputTrackerComponent,
     InputTrackerTickComponent,
+    RotationBuilderTickComponent,
   ],
   imports: [
     CommonModule,
@@ -33,6 +35,7 @@ import { InputTrackerTickComponent } from './input-tracker-tick/input-tracker-ti
     ActualTickComponent,
     InputTrackerComponent,
     InputTrackerTickComponent,
+    RotationBuilderTickComponent,
   ],
 })
 export class RunescapeModule { }
