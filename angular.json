@@ -113,5 +113,7 @@
       }
     }
   },
-  "defaultProject": "rs-keybind-sandbox"
+  "cli": {
+    "analytics": "9bfd1e25-4388-4c95-86c1-04eede0f0b0a"
+  }
 }
