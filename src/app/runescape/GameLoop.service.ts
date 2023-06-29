@@ -4,7 +4,7 @@ import { Observable, Subject } from "rxjs";
 @Injectable({ providedIn: "root" })
 export class GameLoop {
   protected running: boolean = false;
-  protected tickInterval: number = 5000;
+  protected tickInterval: number = 600;
   protected ticks: Subject<void> = new Subject();
 
   public start() {
