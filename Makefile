@@ -5,4 +5,4 @@ interact:
 	@docker-compose exec app bash
 
 serve:
-	@docker-compose exec -d app ng serve
+	@docker-compose exec app ng serve
