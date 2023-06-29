@@ -8,6 +8,10 @@
     <button (click)="onRemove(index)">Remove</button>
   </div>
 
+  <ng-container *ngIf="tick.keyPresses.length === 0">
+    <p>None</p>
+  </ng-container>
+
   <div>
     <input [(ngModel)]="newKeyStroke" type="text">
     <button (click)="onAdd()">Add keystroke</button>
