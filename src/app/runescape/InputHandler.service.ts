@@ -66,7 +66,7 @@ export class InputHandler {
   }
 
   protected shouldRecordKeystroke(event: KeyboardEvent): boolean {
-    return !['CTRL', 'ALT', 'SHIFT'].includes(event.key.toUpperCase());
+    return !['CONTROL', 'ALT', 'SHIFT'].includes(event.key.toUpperCase());
   }
 
   protected mapSpecialKeys(key: string) {
