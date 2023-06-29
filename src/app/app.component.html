@@ -1,8 +1,8 @@
 <main>
   <div class="btn-container">
     <button (click)="loadRotation()">Load known rotation</button>
-    <button (click)="start()">Start the game loop</button>
-    <button (click)="stop()">Stop the game loop</button>
+    <button (click)="this.game.startGameLoop()">Start the game loop</button>
+    <button (click)="this.game.stopGameLoop()">Stop the game loop</button>
     <button (click)="showRotationBuilder = !showRotationBuilder">
       {{ showRotationBuilder ? 'Hide' : 'Show' }} rotation builder
     </button>
@@ -17,6 +17,6 @@
   </div>
 
   <div class="tick-container">
-    <app-actual-tick *ngFor="let tick of loop.ticks | async" [tick]="tick" [resultset]="getResultSet(tick)"></app-actual-tick>
+    <app-actual-tick *ngFor="let tick of this.game.ticks$() | async" [tick]="tick"></app-actual-tick>
   </div>
 </main>
