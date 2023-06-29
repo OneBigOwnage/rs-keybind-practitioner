@@ -12,11 +12,5 @@
 
   <app-rotation-builder *ngIf="showRotationBuilder"></app-rotation-builder>
 
-  <div class="rotation-container">
-    <app-rotation *ngIf="!showRotationBuilder"></app-rotation>
-  </div>
-
-  <div class="tick-container">
-    <app-actual-tick *ngFor="let tick of this.game.ticks$() | async" [tick]="tick"></app-actual-tick>
-  </div>
+  <app-input-tracker></app-input-tracker>
 </main>
