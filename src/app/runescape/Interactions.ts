@@ -32,6 +32,6 @@ export class Tick {
   constructor (public interactions: Interaction[] = []) { }
 }
 
-export function tickFactory(input: string): Tick {
-  return new Tick(input.split('').map(key => new ShouldPressKey(key)));
+export function tickFactory(input: string = ''): Tick {
+  return new Tick(input.split(' ').map(key => new ShouldPressKey(key)));
 }
