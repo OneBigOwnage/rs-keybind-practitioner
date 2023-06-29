@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { PlannedTick } from '../PlannedTick';
-import RotationRepository from '../RotationRepository.service';
+import { Component, OnInit } from '@angular/core';
+import { take } from 'rxjs/operators';
+import TickRepository from '../TickRepository.service';
+import { Tick } from '../Interactions';
 
 @Component({
   selector: 'app-rotation-builder',
@@ -9,79 +10,33 @@ import RotationRepository from '../RotationRepository.service';
 })
 export class RotationBuilderComponent implements OnInit {
 
-  constructor(public repo: RotationRepository) { }
+  constructor(public repo: TickRepository) { }
 
   ngOnInit(): void {
   }
 
   addTick() {
-    let ticks = this.repo.rotation.value;
+    this.repo.rotation$().pipe(take(1)).subscribe(ticks => {
 
-    ticks.push(new PlannedTick(this.hash(), [], []));
+      ticks.push(new Tick());
 
-    this.repo.rotation.next(ticks);
+      this.repo.setExpectedRotation(ticks);
+    }).unsubscribe();
   }
 
-  updateTick(tick: PlannedTick) {
-    let ticks = this.repo.rotation.value;
+  updateTick(index: number, tick: Tick) {
+    this.repo.rotation$().pipe(take(1)).subscribe(ticks => {
+      ticks[index] = tick;
 
-    ticks[ticks.indexOf(tick)] = tick;
-
-    this.repo.rotation.next(ticks);
+      this.repo.setExpectedRotation(ticks);
+    }).unsubscribe();
   }
 
-  removeTick(tick: PlannedTick) {
-    let ticks = this.repo.rotation.value;
+  removeTick(index: number) {
+    this.repo.rotation$().pipe(take(1)).subscribe(ticks => {
+      ticks.splice(index, 1);
 
-    ticks.splice(ticks.indexOf(tick), 1);
-
-    this.repo.rotation.next(ticks);
+      this.repo.setExpectedRotation(ticks);
+    }).unsubscribe();
   }
-
-  hash() {
-    return Math.random().toString(36).substring(2, 15)
-      + Math.random().toString(36).substring(2, 15);
-  }
-
-  // saveKeyStroke() {
-  //   if (this.keyStrokes == '') {
-  //     return;
-  //   }
-
-  //   this.keyStrokes = this.keyStrokes.trim().toUpperCase();
-
-  //   if (this.currentTick !== undefined) {
-  //     this.currentTick.keyPresses = [this.keyStrokes];
-
-  //     let ticks = this.repo.rotation.value;
-
-  //     let index = ticks.indexOf(this.currentTick);
-  //     ticks[index] = this.currentTick;
-
-  //     this.repo.rotation.next(ticks);
-
-  //     this.currentTick = undefined;
-  //   } else {
-  //     let ticks = this.repo.rotation.value;
-
-  //     ticks.push(new Tick(Date.now(), [this.keyStrokes], []));
-
-  //     this.repo.rotation.next(ticks);
-  //   }
-
-  //   this.keyStrokes = '';
-  // }
-
-  // setCurrentTick(tick: Tick) {
-  //   if (tick == this.currentTick) {
-  //     this.currentTick = undefined;
-  //     this.keyStrokes = '';
-
-  //     return;
-  //   }
-
-  //   this.keyStrokes = tick.keyPresses[0];
-  //   this.currentTick = tick;
-  // }
-
 }
