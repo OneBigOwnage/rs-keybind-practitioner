@@ -1,0 +1,24 @@
+:host {
+  justify-self: stretch;
+  border: 1px solid black;
+  height: 100px;
+}
+
+:host[context="PREVIOUS"] {
+  background-color: #ff5e5e;
+}
+
+:host[context="CURRENT"] {
+  background-color: #1c79ca;
+  grid-column-start: 4;
+}
+
+:host[context="UPCOMING"] {
+  background-color: #fff652;
+  grid-column-start: 5;
+}
+
+// We only want the first upcoming tick to start at 5, the others should flow after it
+:host[context="UPCOMING"]~:host[context="UPCOMING"] {
+  grid-column-start: unset;
+}
