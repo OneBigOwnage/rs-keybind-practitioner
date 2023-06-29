@@ -1,6 +1,18 @@
-<ng-template [ngIf]="tick && resultset">
+<ng-template [ngIf]="tick">
   <div class="app-actual-tick no-select">
-    <kbd *ngFor="let key of resultset.correctKeyPresses" class="kbc-button kbc-button-success">{{ key }}</kbd>
-    <kbd *ngFor="let key of resultset.incorrectKeyPresses" class="kbc-button kbc-button-danger">{{ key }}</kbd>
+    <ng-container *ngFor="let interaction of tick.interactions">
+      <kbd class="kbc-button" [class.kbc-button-success]="this.isSuccessful(interaction)" [class.kbc-button-danger]="this.isMissedOrUnexpected(interaction)">
+        <ng-container *ngIf="this.isMissed(interaction)">
+          <mat-icon>call_missed_outgoing</mat-icon>
+        </ng-container>
+        <ng-container *ngIf="this.isUnexpected(interaction)">
+          <mat-icon>close</mat-icon>
+        </ng-container>
+        <ng-container *ngIf="this.isSuccessful(interaction)">
+          <mat-icon>star_outline</mat-icon>
+        </ng-container>
+        {{ interaction.key }}
+      </kbd>
+    </ng-container>
   </div>
 </ng-template>

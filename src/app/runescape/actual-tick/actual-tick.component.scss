@@ -7,6 +7,14 @@
   min-width: 40px;
 }
 
+kbc.kbc-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  font-size: 15pt;
+}
+
 kbd.kbc-button:not(:last-child) {
   margin-right: 12px;
 }

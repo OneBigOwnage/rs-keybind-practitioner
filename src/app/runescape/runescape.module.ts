@@ -7,6 +7,7 @@ import { EditableTickComponent } from './editable-tick/editable-tick.component';
 import { TimeVisualizerComponent } from './time-visualizer/time-visualizer.component';
 import { PlannedTickComponent } from './planned-tick/planned-tick.component';
 import { ActualTickComponent } from './actual-tick/actual-tick.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { ActualTickComponent } from './actual-tick/actual-tick.component';
   imports: [
     CommonModule,
     FormsModule,
+    MatIconModule,
   ],
   exports: [
     RotationBuilderComponent,
