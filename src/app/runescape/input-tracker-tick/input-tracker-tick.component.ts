@@ -10,11 +10,11 @@ export type InputTrackerTickContextType = 'PREVIOUS' | 'CURRENT' | 'UPCOMING';
 })
 export class InputTrackerTickComponent implements OnInit {
 
-  @Input()
-  tick?: Tick;
+  @Input({ required: true })
+  tick!: Tick;
 
-  @Input()
-  context?: InputTrackerTickContextType;
+  @Input({ required: true })
+  context!: InputTrackerTickContextType;
 
   constructor() { }
 
