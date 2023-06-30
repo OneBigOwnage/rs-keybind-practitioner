@@ -3,6 +3,8 @@ import TickRepository from "./TickRepository.service";
 import { GameLoop } from "./GameLoop.service";
 import { InputHandler } from "./InputHandler.service";
 import { Tick } from "./Interactions";
+import { combineLatest } from "rxjs";
+import { filter, map, takeWhile } from "rxjs/operators";
 
 @Injectable({ providedIn: "root" })
 export default class Game {
@@ -17,6 +19,16 @@ export default class Game {
 
   public startGameLoop() {
     this.repo.clearTicks();
+
+    // We automatically stop the game loop from running when the rotation is complete.
+    combineLatest([this.repo.rotation$(), this.repo.ticks$()])
+      .pipe(
+        map(([rotation, ticks]) => ticks.length > rotation.length),
+        takeWhile(bool => !bool, true),
+        filter(bool => bool)
+      )
+      .subscribe(() => this.loop.stop());
+
     this.loop.start();
   }
 
