@@ -43,4 +43,8 @@ export default class Game {
   public ticks$() {
     return this.repo.ticks$();
   }
+
+  public resetGameLoop() {
+    this.repo.clearTicks();
+  }
 }
