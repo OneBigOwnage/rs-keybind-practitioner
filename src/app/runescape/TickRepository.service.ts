@@ -1,7 +1,8 @@
-import { Injectable, MissingTranslationStrategy } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
-import { MissedKeyPress, SuccessfulKeyPress, Tick, UnexpectedKeyPress } from "./Interactions";
+import { Interaction, MissedKeyPress, SuccessfulKeyPress, Tick, UnexpectedKeyPress } from "./Interactions";
 import { UserInput } from "./InputHandler.service";
+import { map } from "rxjs/operators";
 
 @Injectable({ providedIn: "root" })
 export default class TickRepository {
@@ -85,5 +86,23 @@ export default class TickRepository {
 
     ticks[ticks.length - 1] = recordedTick;
     this.ticks.next(ticks);
+  }
+
+  public correctCount$(): Observable<number> {
+    return this.ticks.pipe(
+      map(ticks => ticks.reduce((total: Interaction[], tick) => [...total, ...tick.interactions], []).filter(interaction => interaction instanceof SuccessfulKeyPress).length)
+    );
+  }
+
+  public missedCount$(): Observable<number> {
+    return this.ticks.pipe(
+      map(ticks => ticks.reduce((total: Interaction[], tick) => [...total, ...tick.interactions], []).filter(interaction => interaction instanceof MissedKeyPress).length)
+    );
+  }
+
+  public unexpectedCount$(): Observable<number> {
+    return this.ticks.pipe(
+      map(ticks => ticks.reduce((total: Interaction[], tick) => [...total, ...tick.interactions], []).filter(interaction => interaction instanceof UnexpectedKeyPress).length)
+    );
   }
 }
