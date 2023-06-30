@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 export class KeyPress {
   constructor(public readonly key: string) { }
@@ -14,12 +14,18 @@ export class InputHandler {
 
   protected keyPresses = new Subject<KeyPress>();
 
+  protected allKeyPresses = new BehaviorSubject<KeyPress[]>([]);
+
   constructor() {
     this.registerListeners();
   }
 
   public keyPresses$(): Observable<KeyPress> {
     return this.keyPresses.asObservable();
+  }
+
+  public allKeyPresses$(): Observable<KeyPress[]> {
+    return this.allKeyPresses.asObservable();
   }
 
   protected registerListeners() {
@@ -33,6 +39,8 @@ export class InputHandler {
     document.addEventListener('keyup', (event: KeyboardEvent) => {
       event.preventDefault();
       event.stopPropagation();
+
+      this.allKeyPresses.next([...this.allKeyPresses.value, this.extractKey(event)]);
 
       if (!this.shouldRecordKeystroke(event)) {
         return;
