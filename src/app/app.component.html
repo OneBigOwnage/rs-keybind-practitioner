@@ -1,7 +1,7 @@
 <main>
   <div class="btn-container">
     <button (click)="loadRotation()">Load known rotation</button>
-    <button (click)="this.game.startGameLoop()">Start the game loop</button>
+    <button (click)="this.startGame()">{{ (this.isGameRunning$ | async ) ? 'Reset' : 'Start' }} the game loop</button>
     <button (click)="this.game.stopGameLoop()">Stop the game loop</button>
     <button (click)="showRotationBuilder = !showRotationBuilder">
       {{ showRotationBuilder ? 'Hide' : 'Show' }} rotation builder
@@ -18,4 +18,12 @@
     <div style="justify-self: start;">Upcoming ticks</div>
   </div>
   <app-input-tracker></app-input-tracker>
+
+  <ng-container *ngIf="(this.countDown$ | async) as num">
+    <div style="display: flex; justify-content: center; align-items: center; padding-top: 20px;">
+      <p style="font-size: 100pt; line-height: 100pt;">{{ num }}</p>
+    </div>
+  </ng-container>
+
+  <app-tracker-results *ngIf="true || (this.isGameCompleted$ | async)"></app-tracker-results>
 </main>
