@@ -1,0 +1,8 @@
+<div class="results-container">
+ <span class="fw-500">Correct:</span>
+ <span>{{ this.repo.correctCount$() | async }}</span>
+ <span class="fw-500">Missed:</span>
+ <span>{{ this.repo.missedCount$() | async }}</span>
+ <span class="fw-500">Unexpected:</span>
+ <span>{{ this.repo.unexpectedCount$() | async }}</span>
+</div>
