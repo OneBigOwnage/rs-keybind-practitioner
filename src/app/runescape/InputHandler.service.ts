@@ -89,6 +89,10 @@ export class InputHandler {
       return '<SPACE>';
     }
 
+    if (key === 'ESCAPE') {
+      return '<ESC>';
+    }
+
     return key;
   }
 }
