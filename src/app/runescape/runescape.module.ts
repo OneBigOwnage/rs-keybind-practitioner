@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { InputTrackerComponent } from './input-tracker/input-tracker.component';
 import { InputTrackerTickComponent } from './input-tracker-tick/input-tracker-tick.component';
 import { RotationBuilderTickComponent } from './rotation-builder-tick/rotation-builder-tick.component';
+import { TrackerResultsComponent } from './tracker-results/tracker-results.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { RotationBuilderTickComponent } from './rotation-builder-tick/rotation-b
     InputTrackerComponent,
     InputTrackerTickComponent,
     RotationBuilderTickComponent,
+    TrackerResultsComponent,
   ],
   imports: [
     CommonModule,
@@ -36,6 +38,7 @@ import { RotationBuilderTickComponent } from './rotation-builder-tick/rotation-b
     InputTrackerComponent,
     InputTrackerTickComponent,
     RotationBuilderTickComponent,
+    TrackerResultsComponent,
   ],
 })
 export class RunescapeModule { }
