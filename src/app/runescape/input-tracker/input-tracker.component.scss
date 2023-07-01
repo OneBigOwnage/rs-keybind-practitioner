@@ -1,24 +1,27 @@
 :host {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 10px;
+  gap: 5px;
   padding-left: 10px;
   padding-right: 10px;
 }
 
+
 app-input-tracker-tick {
   justify-self: stretch;
-  transition: all 0.6s ease-out;
-  height: 100px;
+  transition: all 0.3s ease-out;
+  height: 400px;
 
   display: flex;
   flex-wrap: wrap;
-  gap: 3px;
-  justify-content: center;
-  align-items: center;
+  align-content: flex-start;
+  gap: 5px;
+
   background: #fff;
   box-shadow: 0 10px 19px 0 rgba(90, 116, 148, 0.4);
   border-radius: 10px;
+
+  padding: 5px;
 }
 
 app-input-tracker-tick[context="CURRENT"] {

@@ -1,15 +1,18 @@
 <ng-container *ngFor="let interaction of tick.interactions">
-  <kbd class="kbc-button" [class.kbc-button-success]="this.isSuccessful(interaction)"
-    [class.kbc-button-danger]="this.isMissed(interaction) || this.isUnexpected(interaction)">
-    <ng-container *ngIf="this.isMissed(interaction)">
-      <mat-icon>call_missed_outgoing</mat-icon>
-    </ng-container>
-    <ng-container *ngIf="this.isUnexpected(interaction)">
-      <mat-icon>close</mat-icon>
-    </ng-container>
-    <ng-container *ngIf="this.isSuccessful(interaction)">
-      <mat-icon>star_outline</mat-icon>
-    </ng-container>
-    {{ interaction.key }}
-  </kbd>
+  <div class="interaction-container">
+    <img [src]="this.icon(interaction) | async" onerror="this.style.opacity = 0;" style="height: 60px; width: 60px; align-self: center;">
+    <kbd class="kbc-button" [class.kbc-button-success]="this.isSuccessful(interaction)"
+      [class.kbc-button-danger]="this.isMissed(interaction) || this.isUnexpected(interaction)">
+      <ng-container *ngIf="this.isMissed(interaction)">
+        <mat-icon>call_missed_outgoing</mat-icon>
+      </ng-container>
+      <ng-container *ngIf="this.isUnexpected(interaction)">
+        <mat-icon>close</mat-icon>
+      </ng-container>
+      <ng-container *ngIf="this.isSuccessful(interaction)">
+        <mat-icon>star_outline</mat-icon>
+      </ng-container>
+      {{ interaction.key }}
+    </kbd>
+  </div>
 </ng-container>
