@@ -8,7 +8,7 @@
 
 app-input-tracker-tick {
   justify-self: stretch;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.6s ease-out;
   height: 100px;
 
   display: flex;
@@ -19,10 +19,6 @@ app-input-tracker-tick {
   background: #fff;
   box-shadow: 0 10px 19px 0 rgba(90, 116, 148, 0.4);
   border-radius: 10px;
-}
-
-app-input-tracker-tick[context="PREVIOUS"] {
-  opacity: 0.7;
 }
 
 app-input-tracker-tick[context="CURRENT"] {

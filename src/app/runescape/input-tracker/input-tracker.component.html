@@ -1,8 +1,9 @@
 <app-input-tracker-tick *ngFor="let tick of previousTicks$ | async; index as index; count as count;" [tick]="tick"
-  context="PREVIOUS" [style]="'grid-column-start: ' + (4 - count + index) + ';'"></app-input-tracker-tick>
+  context="PREVIOUS"
+  [style]="'grid-column-start: ' + (4 - count + index) + '; opacity: ' + (index === 0 ? '0.2' : index === 1 ? '0.4' : '0.7')"></app-input-tracker-tick>
 
 <app-input-tracker-tick *ngIf="(currentTick$ | async) as currentTick" [tick]="currentTick"
   context="CURRENT"></app-input-tracker-tick>
 
-<app-input-tracker-tick *ngFor="let tick of upcomingTicks$ | async" [tick]="tick"
-  context="UPCOMING"></app-input-tracker-tick>
+<app-input-tracker-tick *ngFor="let tick of upcomingTicks$ | async; index as index" [tick]="tick" context="UPCOMING"
+  [style]="'opacity: ' + (index === 0 ? '0.7' : index === 1 ? '0.4' : '0.2')"></app-input-tracker-tick>
