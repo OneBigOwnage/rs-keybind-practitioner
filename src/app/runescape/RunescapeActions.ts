@@ -1,4 +1,4 @@
-export const abilities = [
+export const RunescapeActions = [
   // Attack
   "Slice",
   "Backhand",
@@ -152,4 +152,34 @@ export const abilities = [
   "Surge",
   "Escape",
   "Dive",
+
+  // Melee
+  "Ek-ZekKil",
+  "Zaros godsword",
+  "Dark Shared of Leng",
+  "Dark Sliver of Leng",
+  "Kalphite defender",
+  "Masterwork Spear of Annihilation",
+  "Noxious scythe",
+  "Malevolent kiteshield",
+  "Divine spirit shield",
+
+  // Ranged
+  "Bow of the Last Guardian",
+  "Eldritch crossbow",
+  "Seren godbow",
+  "Blightbound crossbow",
+  "Off-hand Blightbound crossbow",
+  "Kalphite repriser",
+  "Vengeful kiteshield",
+  "Elysian spirit shield",
+
+  // Magic
+  "Fractured Staff of Armadyl",
+  "Inquisitor staff",
+  "Wand of the praesul",
+  "Imperium core",
+  "Kalphite rebounder",
+  "Merciless kiteshield",
+  "Arcane spirit shield",
 ];
