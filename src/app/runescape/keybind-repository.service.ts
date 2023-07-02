@@ -35,7 +35,7 @@ export class KeybindRepository {
 
   public storeOrUpdate(keybind: Keybind): void {
     let keybinds = this.keybinds.value;
-    let index = keybinds.findIndex(k => k.keyCombination === keybind.keyCombination);
+    let index = keybinds.findIndex(k => k.ability.name === keybind.ability.name);
 
     if (index >= 0) {
       keybinds[index] = keybind;
@@ -48,7 +48,7 @@ export class KeybindRepository {
 
   public delete(keybind: Keybind): void {
     let keybinds = this.keybinds.value;
-    let index = keybinds.findIndex(k => k.keyCombination === keybind.keyCombination);
+    let index = keybinds.findIndex(k => k.ability.name === keybind.ability.name);
 
     if (index >= 0) {
       keybinds.splice(index, 1);
