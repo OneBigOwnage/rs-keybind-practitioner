@@ -1,24 +1,24 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
-import { Interaction, MissedKeyPress, SuccessfulKeyPress, Tick, UnexpectedKeyPress } from "./Interactions";
+import { Interaction, MissedAction, PlannedTick, SuccessfullyPerformedAction, Tick, UnexpectedKeyPress } from "./Interactions";
 import { UserInput } from "./InputHandler.service";
 import { map } from "rxjs/operators";
 
 @Injectable({ providedIn: "root" })
 export default class TickRepository {
   /** The list of ticks with their associated expected interactions. */
-  protected rotation: BehaviorSubject<Tick[]> = new BehaviorSubject<Tick[]>([]);
+  protected rotation: BehaviorSubject<PlannedTick[]> = new BehaviorSubject<PlannedTick[]>([]);
 
   /** The list of ticks that have happened in the game. */
   protected ticks: BehaviorSubject<Tick[]> = new BehaviorSubject<Tick[]>([]);
 
   constructor() { }
 
-  public rotation$(): Observable<Tick[]> {
+  public rotation$(): Observable<PlannedTick[]> {
     return this.rotation.asObservable();
   }
 
-  public setExpectedRotation(rotation: Tick[]) {
+  public setExpectedRotation(rotation: PlannedTick[]) {
     this.rotation.next(rotation);
   }
 
@@ -37,10 +37,10 @@ export default class TickRepository {
     let recordedTick = this.ticks.value[this.ticks.value.length - 1];
 
     // At the end of the tick, we need to check if there's any missed interactions.
-    let indexToStartTakeMissing = recordedTick.interactions.filter(interaction => interaction instanceof SuccessfulKeyPress || interaction instanceof MissedKeyPress).length;
+    let indexToStartTakeMissing = recordedTick.interactions.filter(interaction => interaction instanceof SuccessfullyPerformedAction || interaction instanceof MissedAction).length;
 
     if (indexToStartTakeMissing < plannedTick.interactions.length) {
-      recordedTick.interactions.push(...plannedTick.interactions.slice(indexToStartTakeMissing).map(interaction => new MissedKeyPress(interaction.key)));
+      recordedTick.interactions.push(...plannedTick.interactions.slice(indexToStartTakeMissing).map(interaction => new MissedAction(interaction.keybind)));
     }
 
     this.ticks.next([...ticks, new Tick()]);
@@ -68,16 +68,24 @@ export default class TickRepository {
     }
 
     let plannedTick = this.rotation.value[ticks.length - 1];
+    let nrOfExpectedInteractions = plannedTick.interactions.filter(interaction => interaction.key() === input.key).length;
+    let nrOfRecordedInteractionsSoFar = recordedTick.interactions.filter(interaction => interaction.key() === input.key).length;
 
-    if (plannedTick.interactions.filter(interaction => interaction.key === input.key).length > recordedTick.interactions.filter(interaction => interaction.key === input.key).length) {
+    if (nrOfExpectedInteractions > nrOfRecordedInteractionsSoFar) {
       // Sometimes the input order within the context of a single tick doesn't matter, but sometimes it does.
       // If we want to account for the the order of input, when replacing an expected input with a successful one,
       // we need to check if there's any expected input before the successful one we just inserted. If so,
       // we need to replace all expected inputs before the one we inserted with missed interactions.
-      let indexToInsertBefore = recordedTick.interactions.push(new SuccessfulKeyPress(input.key)) - 1;
-      let startIndexToFindMissing = recordedTick.interactions.filter(interaction => interaction instanceof SuccessfulKeyPress || interaction instanceof MissedKeyPress).length - 1;
-      let endIndexToFindMissing = plannedTick.interactions.findIndex((interaction, index) => index >= startIndexToFindMissing && interaction.key === input.key);
-      let missingInput = plannedTick.interactions.slice(startIndexToFindMissing, endIndexToFindMissing).map(interaction => new MissedKeyPress(interaction.key));
+      let action = plannedTick.interactions.find(interaction => interaction.key() === input.key);
+
+      if (action === undefined) {
+        throw new Error(`Expected action with key ${input.key} not found.`);
+      }
+
+      let indexToInsertBefore = recordedTick.interactions.push(new SuccessfullyPerformedAction(action.keybind)) - 1;
+      let startIndexToFindMissing = recordedTick.interactions.filter(interaction => interaction instanceof SuccessfullyPerformedAction || interaction instanceof MissedAction).length - 1;
+      let endIndexToFindMissing = plannedTick.interactions.findIndex((interaction, index) => index >= startIndexToFindMissing && interaction.key() === input.key);
+      let missingInput = plannedTick.interactions.slice(startIndexToFindMissing, endIndexToFindMissing).map(interaction => new MissedAction(interaction.keybind));
 
       recordedTick.interactions.splice(indexToInsertBefore, 0, ...missingInput);
     } else {
@@ -90,13 +98,13 @@ export default class TickRepository {
 
   public correctCount$(): Observable<number> {
     return this.ticks.pipe(
-      map(ticks => ticks.reduce((total: Interaction[], tick) => [...total, ...tick.interactions], []).filter(interaction => interaction instanceof SuccessfulKeyPress).length)
+      map(ticks => ticks.reduce((total: Interaction[], tick) => [...total, ...tick.interactions], []).filter(interaction => interaction instanceof SuccessfullyPerformedAction).length)
     );
   }
 
   public missedCount$(): Observable<number> {
     return this.ticks.pipe(
-      map(ticks => ticks.reduce((total: Interaction[], tick) => [...total, ...tick.interactions], []).filter(interaction => interaction instanceof MissedKeyPress).length)
+      map(ticks => ticks.reduce((total: Interaction[], tick) => [...total, ...tick.interactions], []).filter(interaction => interaction instanceof MissedAction).length)
     );
   }
 

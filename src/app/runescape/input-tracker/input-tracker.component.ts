@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import TickRepository from '../TickRepository.service';
 import { Observable, combineLatest } from 'rxjs';
-import { Interaction, MissedKeyPress, SuccessfulKeyPress, Tick } from '../Interactions';
+import { Interaction, MissedAction, PlannedTick, SuccessfullyPerformedAction, Tick } from '../Interactions';
 import { filter, map } from 'rxjs/operators';
 
 @Component({
@@ -25,15 +25,15 @@ export class InputTrackerComponent implements OnInit {
           let index = ticks.length - 1;
           let rotationTick = rotation[index];
 
-          return [ticks[index], rotationTick];
+          return { gameTick: ticks[index], rotationTick: rotationTick };
         }),
-        map(([tick, rotationTick]) => {
-          if (!(rotationTick instanceof Tick)) {
-            return tick;
+        map(({ gameTick, rotationTick }) => {
+          if (!(rotationTick instanceof PlannedTick)) {
+            return gameTick;
           }
 
-          let interactions: Interaction[] = tick.interactions;
-          let indexToStartAddingShoulds = interactions.filter(i => i instanceof SuccessfulKeyPress || i instanceof MissedKeyPress).length;
+          let interactions: Interaction[] = gameTick.interactions;
+          let indexToStartAddingShoulds = interactions.filter(i => i instanceof SuccessfullyPerformedAction || i instanceof MissedAction).length;
           let shoulds = rotationTick.interactions.slice(indexToStartAddingShoulds);
 
           return new Tick(interactions.concat(shoulds));

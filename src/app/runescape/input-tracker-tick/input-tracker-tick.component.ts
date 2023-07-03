@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Interaction, MissedKeyPress, SuccessfulKeyPress, Tick, UnexpectedKeyPress } from '../Interactions';
+import { Interaction, MissedAction, ShouldPerformAction, SuccessfullyPerformedAction, Tick, UnexpectedKeyPress } from '../Interactions';
 import { KeybindRepository } from '../keybind-repository.service';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 export type InputTrackerTickContextType = 'PREVIOUS' | 'CURRENT' | 'UPCOMING';
 
@@ -25,7 +25,7 @@ export class InputTrackerTickComponent implements OnInit {
   }
 
   public isSuccessful(interaction: Interaction): boolean {
-    return interaction instanceof SuccessfulKeyPress;
+    return interaction instanceof SuccessfullyPerformedAction;
   }
 
   public isUnexpected(interaction: Interaction): boolean {
@@ -33,10 +33,14 @@ export class InputTrackerTickComponent implements OnInit {
   }
 
   public isMissed(interaction: Interaction): boolean {
-    return interaction instanceof MissedKeyPress;
+    return interaction instanceof MissedAction;
   }
 
   public icon(interaction: Interaction): Observable<string | undefined> {
-    return this.repo.keybinds$().pipe(map(keybinds => keybinds.find(keybind => keybind.keyCombination === interaction.key)?.ability.iconURL()));
+    if (!(interaction instanceof UnexpectedKeyPress)) {
+      return of(interaction.keybind.ability.iconURL());
+    }
+
+    return of(undefined);
   }
 }

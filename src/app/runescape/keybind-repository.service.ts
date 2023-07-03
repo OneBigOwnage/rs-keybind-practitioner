@@ -1,19 +1,20 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { RunescapeAction } from './RunescapeActions';
 
 export class Keybind {
   constructor(public readonly keyCombination: string, public readonly ability: Ability) { }
 };
 
 export class Ability {
-  constructor(public readonly name: string) { }
+  constructor(public readonly name: RunescapeAction) { }
 
   public iconURL(): string {
     return `/assets/Runescape ability icons/${this.name.split(' ').join('_')}.png`;
   }
 };
 
-export const keybindFactory = (keyCombination: string, ability: string) => new Keybind(keyCombination, new Ability(ability));
+export const keybindFactory = (keyCombination: string, ability: RunescapeAction) => new Keybind(keyCombination, new Ability(ability));
 
 @Injectable({
   providedIn: 'root'
@@ -23,10 +24,13 @@ export class KeybindRepository {
   protected keybinds: BehaviorSubject<Keybind[]>;
 
   constructor() {
-    this.keybinds = new BehaviorSubject<Keybind[]>(JSON.parse(localStorage.getItem('keybinds') || JSON.stringify([])) as Keybind[]);
+    this.keybinds = new BehaviorSubject<Keybind[]>(
+      this.importKeybindsFromLocalStorage()
+    );
+
     this.keybinds.subscribe(value => localStorage.setItem('keybinds', JSON.stringify(value)));
 
-    this.seed();
+    (window as any).seed = () => this.seed();
   }
 
   public keybinds$(): Observable<Keybind[]> {
@@ -68,7 +72,7 @@ export class KeybindRepository {
     this.storeOrUpdate(keybindFactory("T", "Greater Concentrated Blast"));
     this.storeOrUpdate(keybindFactory("ALT-3", "Masterwork Spear of Annihilation"));
     this.storeOrUpdate(keybindFactory("ALT-B", "Ingenuity of the Humans"));
-    this.storeOrUpdate(keybindFactory("X", "Essence of Finality"));
+    this.storeOrUpdate(keybindFactory("X", "Essence of Finality spec"));
     this.storeOrUpdate(keybindFactory("V", "Combust"));
     this.storeOrUpdate(keybindFactory("H", "Smoke Cloud"));
     this.storeOrUpdate(keybindFactory("Z", "Freedom"));
@@ -79,5 +83,11 @@ export class KeybindRepository {
     this.storeOrUpdate(keybindFactory("5", "Dive"));
     this.storeOrUpdate(keybindFactory("CTRL-W", "Omnipower"));
     this.storeOrUpdate(keybindFactory("CTRL-Q", "Tsunami"));
+  }
+
+  protected importKeybindsFromLocalStorage(): Keybind[] {
+    let plainObjects = JSON.parse(localStorage.getItem('keybinds') || JSON.stringify([]));
+
+    return plainObjects.map((plainObject: any) => new Keybind(plainObject.keyCombination, new Ability(plainObject.ability.name)));
   }
 }

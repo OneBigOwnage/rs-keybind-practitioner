@@ -1,0 +1,46 @@
+.container {
+  width: calc(100% - 600px);
+  padding-left: 300px;
+  padding-right: 300px;
+  padding-bottom: 30px;
+
+  h1 {
+    text-align: center;
+  }
+}
+
+.configurator-grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+
+
+  .keybind {
+    display: flex;
+    justify-content: space-between;
+    gap: 3px;
+    width: fit-content;
+
+    border: 1px solid black;
+    border-radius: 3px;
+
+    padding: 3px;
+
+    background-color: white;
+
+    &.has-keybind {
+      background-color: #99ff8b;
+    }
+
+    &.keybind-missing {
+      background-color: #ff8b8b;
+    }
+
+    .keybind-selector {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+    }
+  }
+}

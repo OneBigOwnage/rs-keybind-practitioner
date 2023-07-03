@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import TickRepository from "./TickRepository.service";
 import { GameLoop } from "./GameLoop.service";
 import { InputHandler } from "./InputHandler.service";
-import { Tick } from "./Interactions";
+import { PlannedTick } from "./Interactions";
 import { combineLatest } from "rxjs";
 import { filter, map, takeWhile } from "rxjs/operators";
 
@@ -36,7 +36,7 @@ export default class Game {
     this.loop.stop();
   }
 
-  public setRotation(rotation: Tick[]) {
+  public setRotation(rotation: PlannedTick[]) {
     this.repo.setExpectedRotation(rotation);
   }
 

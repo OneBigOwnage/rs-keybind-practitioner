@@ -1,41 +1,94 @@
+import { RunescapeAction } from "./RunescapeActions";
+import { Keybind } from "./keybind-repository.service";
 
-export class ShouldPressKey {
-  constructor(public readonly key: string) { }
-}
+export class ShouldPerformAction {
+  constructor(public readonly keybind: Keybind) { }
 
-export class SuccessfulKeyPress {
-  constructor(public readonly key: string) { }
-}
-
-export class MissedKeyPress {
-  constructor(public readonly key: string) { }
-}
-
-export class UnexpectedKeyPress {
-  constructor(public readonly key: string) { }
-}
-
-export type Interaction =
-  ShouldPressKey
-  | SuccessfulKeyPress
-  | MissedKeyPress
-  | UnexpectedKeyPress;
-
-export type PlannedInteraction = ShouldPressKey;
-
-export type RecordedInteraction =
-  SuccessfulKeyPress
-  | MissedKeyPress
-  | UnexpectedKeyPress;
-
-export class Tick {
-  constructor (public interactions: Interaction[] = []) { }
+  public key(): string {
+    return this.keybind.keyCombination;
+  }
 
   public toString(): string {
-    return this.interactions.map(interaction => interaction.key).join(' ');
+    return this.keybind.ability.name + ' (' + this.keybind.keyCombination + ')';
   }
 }
 
-export function tickFactory(input: string = ''): Tick {
-  return new Tick(input.split(' ').filter(k => k !== '').map(key => new ShouldPressKey(key)));
+export class SuccessfullyPerformedAction {
+  constructor(public readonly keybind: Keybind) { }
+
+  public key(): string {
+    return this.keybind.keyCombination;
+  }
+
+  public toString(): string {
+    return this.keybind.ability.name + ' (' + this.keybind.keyCombination + ')';
+  }
+}
+
+export class MissedAction {
+  constructor(public readonly keybind: Keybind) { }
+
+  public key(): string {
+    return this.keybind.keyCombination;
+  }
+
+  public toString(): string {
+    return this.keybind.ability.name + ' (' + this.keybind.keyCombination + ')';
+  }
+}
+
+export class UnexpectedKeyPress {
+  constructor(public readonly keyCombination: string) { }
+
+  public key(): string {
+    return this.keyCombination;
+  }
+
+  public toString(): string {
+    return this.key();
+  }
+}
+
+export type Interaction =
+  ShouldPerformAction
+  | SuccessfullyPerformedAction
+  | MissedAction
+  | UnexpectedKeyPress;
+
+export type PlannedInteraction = ShouldPerformAction;
+
+export type RecordedInteraction =
+  SuccessfullyPerformedAction
+  | MissedAction
+  | UnexpectedKeyPress;
+
+export class Tick {
+  constructor(public interactions: Interaction[] = []) { }
+
+  public toString(): string {
+    return '[' + this.interactions.map(interaction => interaction.toString()).join(', ') + ']';
+  }
+}
+
+export class PlannedTick {
+  constructor(public interactions: PlannedInteraction[] = []) { }
+
+  public toString(): string {
+    return '[' + this.interactions.map(interaction => interaction.toString()).join(', ') + ']';
+  }
+}
+
+export function tickFactory(input: RunescapeAction[][], keybinds: Keybind[]): PlannedTick[] {
+  return input.map(actions => {
+    return new PlannedTick(actions.map(action => {
+      const keybind = keybinds.find(keybind => keybind.ability.name === action);
+
+      if (!keybind) {
+        throw new Error('No keybind found for action ' + action);
+      }
+
+      return new ShouldPerformAction(keybind);
+    }));
+
+  });
 }

@@ -1,0 +1,20 @@
+<div class="container">
+  <h1>Keybind Configurator</h1>
+
+  <div class="configurator-grid">
+    <div *ngFor="let action of actions" class="keybind" [class.has-keybind]="(this.getKeybindForAction$(action) | async) !== ''"  [class.keybind-missing]="(this.getKeybindForAction$(action) | async) === ''">
+      <img [src]="'/assets/Runescape ability icons/' + action.split(' ').join('_') + '.png'"
+        style="height: 60px; width: 60px; align-self: center;">
+      <div>
+        <p>{{ action }}</p>
+        <div class="keybind-selector">
+          <input type="text" [value]="this.getKeybindForAction$(action) | async" (focus)="this.setActionTarget(action)" (blur)="this.clearActionTarget()">
+
+          <button (click)="this.clearKeybindForAction(action)">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

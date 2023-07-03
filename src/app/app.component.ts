@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import Game from './runescape/Game.service';
 import { tickFactory } from './runescape/Interactions';
-import { Observable, Subject, combineLatest, fromEvent, of, timer } from 'rxjs';
-import { filter, finalize, map, scan, startWith, take, tap } from 'rxjs/operators';
+import { Observable, combineLatest, timer } from 'rxjs';
+import { filter, finalize, map, startWith, take } from 'rxjs/operators';
 import TickRepository from './runescape/TickRepository.service';
 import { InputHandler } from './runescape/InputHandler.service';
+import { KeybindRepository } from './runescape/keybind-repository.service';
 
 @Component({
   selector: 'app-root',
@@ -13,16 +14,15 @@ import { InputHandler } from './runescape/InputHandler.service';
 })
 export class AppComponent implements OnInit {
 
-  showRotationBuilder: boolean = false;
-  percentage = 0;
+  public showRotationBuilder: boolean = false;
+  public showKeybindConfigurator: boolean = false;
 
   public countDown$?: Observable<number>;
 
   public isGameRunning$: Observable<boolean>;
-
   public isGameCompleted$: Observable<boolean>;
 
-  constructor(public game: Game, repo: TickRepository, input: InputHandler) {
+  constructor(public game: Game, repo: TickRepository, input: InputHandler, protected keybinds: KeybindRepository) {
     this.isGameRunning$ = repo.ticks$().pipe(
       map(ticks => ticks.length > 0),
       startWith(false),
@@ -67,46 +67,64 @@ export class AppComponent implements OnInit {
     );
   }
 
+  public get showGame() {
+    return !this.showRotationBuilder && !this.showKeybindConfigurator;
+  }
+
+  public canShowRotationBuilder() {
+    return !this.showRotationBuilder && !this.showKeybindConfigurator;
+  }
+
+  public canShowKeybindConfigurator() {
+    return !this.showRotationBuilder && !this.showKeybindConfigurator;
+  }
+
+  public canShowGame() {
+    return this.showRotationBuilder || this.showKeybindConfigurator;
+  }
+
   loadRotation() {
     // This is the telos p1 rotation with my new 2023 binds
-    this.game.setRotation([
-      tickFactory('B CTRL-E A'),
-      tickFactory(),
-      tickFactory(),
-      tickFactory('1 S D T'),
-      tickFactory(),
-      tickFactory(),
-      tickFactory('ALT-3 ALT-B X A'),
-      tickFactory(),
-      tickFactory(),
-      tickFactory('V S D'),
-      tickFactory(),
-      tickFactory(),
-      tickFactory('H Z A'),
-      tickFactory(),
-      tickFactory(),
-      tickFactory('2 S D T'),
-      tickFactory(),
-      tickFactory(),
-      tickFactory('A Y'),
-      tickFactory(),
-      tickFactory(),
-      tickFactory('2 3'),
-      tickFactory(),
-      tickFactory(),
-      tickFactory('C'),
-      tickFactory(),
-      tickFactory(),
-      tickFactory('1 S D T'),
-      tickFactory(),
-      tickFactory(),
-      tickFactory('A CTRL-W'),
-      tickFactory(),
-      tickFactory(),
-      tickFactory('CTRL-Q'),
-      tickFactory(),
-      tickFactory('5'),
-      tickFactory('Y'),
-    ]);
+    this.keybinds.keybinds$().subscribe(keybinds => {
+      this.game.setRotation(tickFactory([
+        ['Target cycle', 'Greater Sunshine', 'Inquisitor staff'],
+        [],
+        [],
+        ['Blood Blitz', 'Wand of the praesul', 'Imperium core', 'Greater Concentrated Blast'],
+        [],
+        [],
+        ['Masterwork Spear of Annihilation', 'Ingenuity of the Humans', 'Essence of Finality spec', 'Inquisitor staff'],
+        [],
+        [],
+        ['Combust', 'Wand of the praesul', 'Imperium core'],
+        [],
+        [],
+        ['Smoke Cloud', 'Freedom', 'Inquisitor staff'],
+        [],
+        [],
+        ['Ice Barrage', 'Wand of the praesul', 'Imperium core', 'Greater Concentrated Blast'],
+        [],
+        [],
+        ['Inquisitor staff', 'Dragon Breath'],
+        [],
+        [],
+        ['Ice Barrage', 'Wild Magic'],
+        [],
+        [],
+        ['Wrack'],
+        [],
+        [],
+        ['Blood Blitz', 'Wand of the praesul', 'Imperium core', 'Greater Concentrated Blast'],
+        [],
+        [],
+        ['Inquisitor staff', 'Omnipower'],
+        [],
+        [],
+        ['Tsunami'],
+        [],
+        ['Dive'],
+        ['Dragon Breath']
+      ], keybinds));
+    });
   }
 }

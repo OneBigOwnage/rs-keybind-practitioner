@@ -12,7 +12,7 @@
       <ng-container *ngIf="this.isSuccessful(interaction)">
         <mat-icon>star_outline</mat-icon>
       </ng-container>
-      {{ interaction.key }}
+      {{ interaction.key() }}
     </kbd>
   </div>
 </ng-container>

@@ -137,7 +137,7 @@ export const RunescapeActions = [
   "Dragon Slayer",
   "Demon Slayer",
   "Undead Slayer",
-  "Essence of Finality",
+  "Essence of Finality spec",
   "Siphon",
   "Incite",
   "Tuska's Wrath",
@@ -156,7 +156,7 @@ export const RunescapeActions = [
   // Melee
   "Ek-ZekKil",
   "Zaros godsword",
-  "Dark Shared of Leng",
+  "Dark Shard of Leng",
   "Dark Sliver of Leng",
   "Kalphite defender",
   "Masterwork Spear of Annihilation",
@@ -182,4 +182,14 @@ export const RunescapeActions = [
   "Kalphite rebounder",
   "Merciless kiteshield",
   "Arcane spirit shield",
-];
+
+  // Spells
+  'Blood Blitz',
+  'Smoke Cloud',
+  'Ice Barrage',
+
+  // Special
+  'Target cycle'
+] as const;
+
+export type RunescapeAction = typeof RunescapeActions[number];

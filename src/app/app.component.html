@@ -1,29 +1,40 @@
 <main>
   <div class="btn-container">
-    <button (click)="loadRotation()">Load known rotation</button>
-    <button (click)="this.startGame()">{{ (this.isGameRunning$ | async ) ? 'Reset' : 'Start' }} the game loop</button>
-    <button (click)="this.game.stopGameLoop()">Stop the game loop</button>
-    <button (click)="showRotationBuilder = !showRotationBuilder">
-      {{ showRotationBuilder ? 'Hide' : 'Show' }} rotation builder
+    <button (click)="this.startGame()">{{ (this.isGameRunning$ | async ) ? 'Reset' : 'Start' }} game loop</button>
+    <button (click)="this.game.stopGameLoop()">Stop game loop</button>
+
+    <button *ngIf="this.canShowRotationBuilder()" (click)="showRotationBuilder = true">
+      Rotation builder
     </button>
+
+    <button *ngIf="this.canShowKeybindConfigurator()" (click)="showKeybindConfigurator = true">
+      Keybind configurator
+    </button>
+
+    <button *ngIf="this.canShowGame()" (click)="this.showKeybindConfigurator = false; this.showRotationBuilder = false;">
+      Back to game
+    </button>
+
   </div>
 
-  <!-- <app-time-visualizer [value]="percentage"></app-time-visualizer> -->
+  <app-keybind-configurator *ngIf="showKeybindConfigurator"></app-keybind-configurator>
 
   <app-rotation-builder *ngIf="showRotationBuilder"></app-rotation-builder>
 
-  <div style="display: grid; grid-template-columns: 3fr 1fr 3fr;">
-    <div style="justify-self: end;">Previous ticks</div>
-    <div style="justify-self: center;">Current tick</div>
-    <div style="justify-self: start;">Upcoming ticks</div>
-  </div>
-  <app-input-tracker></app-input-tracker>
-
-  <ng-container *ngIf="(this.countDown$ | async) as num">
-    <div style="display: flex; justify-content: center; align-items: center; padding-top: 20px;">
-      <p style="font-size: 100pt; line-height: 100pt;">{{ num }}</p>
+  <ng-container *ngIf="this.showGame">
+    <div style="display: grid; grid-template-columns: 3fr 1fr 3fr;">
+      <div style="justify-self: end;">Previous ticks</div>
+      <div style="justify-self: center;">Current tick</div>
+      <div style="justify-self: start;">Upcoming ticks</div>
     </div>
-  </ng-container>
+    <app-input-tracker></app-input-tracker>
 
-  <app-tracker-results *ngIf="true || (this.isGameCompleted$ | async)"></app-tracker-results>
+    <ng-container *ngIf="(this.countDown$ | async) as num">
+      <div style="display: flex; justify-content: center; align-items: center; padding-top: 20px;">
+        <p style="font-size: 100pt; line-height: 100pt;">{{ num }}</p>
+      </div>
+    </ng-container>
+
+    <app-tracker-results *ngIf="true || (this.isGameCompleted$ | async)"></app-tracker-results>
+  </ng-container>
 </main>
