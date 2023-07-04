@@ -3,11 +3,16 @@ import TickRepository from "./TickRepository.service";
 import { GameLoop } from "./GameLoop.service";
 import { InputHandler } from "./InputHandler.service";
 import { PlannedTick } from "./Interactions";
-import { combineLatest } from "rxjs";
+import { BehaviorSubject, combineLatest } from "rxjs";
 import { filter, map, takeWhile } from "rxjs/operators";
+
+export type Difficulty = 'BEGINNER' | 'INTERMEDIATE' | 'EXPERT';
 
 @Injectable({ providedIn: "root" })
 export default class Game {
+
+  protected difficulty: BehaviorSubject<Difficulty> = new BehaviorSubject<Difficulty>('BEGINNER');
+
   constructor(
     protected loop: GameLoop,
     protected input: InputHandler,
@@ -46,5 +51,13 @@ export default class Game {
 
   public resetGameLoop() {
     this.repo.clearTicks();
+  }
+
+  public difficulty$() {
+    return this.difficulty.asObservable();
+  }
+
+  public setDifficulty(difficulty: Difficulty) {
+    this.difficulty.next(difficulty);
   }
 }

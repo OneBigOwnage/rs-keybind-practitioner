@@ -1,5 +1,25 @@
 <main>
   <div class="btn-container">
+    <div class="difficulty-selection-container">
+      <div>
+        <input type="radio" name="BEGINNER" id="BEGINNER" (change)="this.onDifficultyChange($event, 'BEGINNER')"
+          [checked]="(this.game.difficulty$() | async) === 'BEGINNER'">
+        <label for="BEGINNER">Beginner</label>
+      </div>
+
+      <div>
+        <input type="radio" name="INTERMEDIATE" id="INTERMEDIATE"
+          (change)="this.onDifficultyChange($event, 'INTERMEDIATE')"
+          [checked]="(this.game.difficulty$() | async) === 'INTERMEDIATE'">
+        <label for="INTERMEDIATE">Intermedia</label>
+      </div>
+
+      <div>
+        <input type="radio" name="EXPERT" id="EXPERT" (change)="this.onDifficultyChange($event, 'EXPERT')"
+          [checked]="(this.game.difficulty$() | async) === 'EXPERT'">
+        <label for="EXPERT">Expert</label>
+      </div>
+    </div>
     <button (click)="this.startGame()">{{ (this.isGameRunning$ | async ) ? 'Reset' : 'Start' }} game loop</button>
     <button (click)="this.game.stopGameLoop()">Stop game loop</button>
 
@@ -11,7 +31,8 @@
       Keybind configurator
     </button>
 
-    <button *ngIf="this.canShowGame()" (click)="this.showKeybindConfigurator = false; this.showRotationBuilder = false;">
+    <button *ngIf="this.canShowGame()"
+      (click)="this.showKeybindConfigurator = false; this.showRotationBuilder = false;">
       Back to game
     </button>
 

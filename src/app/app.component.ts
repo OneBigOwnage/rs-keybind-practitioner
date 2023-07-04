@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import Game from './runescape/Game.service';
+import Game, { Difficulty } from './runescape/Game.service';
 import { tickFactory } from './runescape/Interactions';
 import { Observable, combineLatest, timer } from 'rxjs';
 import { filter, finalize, map, startWith, take } from 'rxjs/operators';
@@ -81,6 +81,12 @@ export class AppComponent implements OnInit {
 
   public canShowGame() {
     return this.showRotationBuilder || this.showKeybindConfigurator;
+  }
+
+  public onDifficultyChange(event: Event, difficulty: Difficulty) {
+    if ((event.target as HTMLInputElement).checked) {
+      this.game.setDifficulty(difficulty);
+    }
   }
 
   loadRotation() {

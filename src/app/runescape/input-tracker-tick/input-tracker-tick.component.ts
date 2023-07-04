@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Interaction, MissedAction, ShouldPerformAction, SuccessfullyPerformedAction, Tick, UnexpectedKeyPress } from '../Interactions';
+import { Interaction, MissedAction, SuccessfullyPerformedAction, Tick, UnexpectedKeyPress } from '../Interactions';
 import { KeybindRepository } from '../keybind-repository.service';
 import { Observable } from 'rxjs';
 import { of } from 'rxjs';
+import Game from '../Game.service';
+import { map } from 'rxjs/operators';
 
 export type InputTrackerTickContextType = 'PREVIOUS' | 'CURRENT' | 'UPCOMING';
 
@@ -19,7 +21,7 @@ export class InputTrackerTickComponent implements OnInit {
   @Input({ required: true })
   context!: InputTrackerTickContextType;
 
-  constructor(public repo: KeybindRepository) { }
+  constructor(public game: Game, public repo: KeybindRepository) { }
 
   ngOnInit(): void {
   }
@@ -42,5 +44,27 @@ export class InputTrackerTickComponent implements OnInit {
     }
 
     return of(undefined);
+  }
+
+  public shouldShowIcon(): Observable<boolean> {
+    if (this.context === 'PREVIOUS') {
+      return of(true);
+    }
+
+    return this.game.difficulty$().pipe(map(difficulty => difficulty !== 'EXPERT'));
+  }
+
+  public shouldShowKeybind(): Observable<boolean> {
+    if (this.context === 'PREVIOUS') {
+      return of(true);
+    }
+
+    return this.game.difficulty$().pipe(map(difficulty => {
+      if (this.context === 'CURRENT') {
+        return difficulty !== 'EXPERT';
+      }
+
+      return difficulty === 'BEGINNER';
+    }));
   }
 }
