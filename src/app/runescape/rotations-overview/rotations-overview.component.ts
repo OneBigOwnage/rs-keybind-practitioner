@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { take } from 'rxjs/operators';
 import TickRepository from '../TickRepository.service';
 import { PlannedTick } from '../Interactions';
-import { RotationRepository } from '../rotation-repository.service';
+import { Rotation, RotationRepository } from '../rotation-repository.service';
+import Game from '../Game.service';
 
 @Component({
   selector: 'app-rotations-overview',
@@ -11,34 +12,22 @@ import { RotationRepository } from '../rotation-repository.service';
 })
 export class RotationsOverview implements OnInit {
 
-  constructor(public repo: RotationRepository) { }
+  constructor(public repo: RotationRepository, public game: Game) { }
 
   ngOnInit(): void {
   }
 
-  // addTick() {
-  //   this.repo.rotation$().pipe(take(1)).subscribe(ticks => {
+  public createNew(): void {
+    this.repo.addRotation(new Rotation(this.randomID(), 'My first rotation', []));
+  }
 
-  //     ticks.push(new PlannedTick());
+  protected randomID(): string {
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-  //     this.repo.setExpectedRotation(ticks);
-  //   }).unsubscribe();
-  // }
+    return Array.from({ length: 5 }).reduce((result: string) => {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      return result + characters.charAt(randomIndex);
 
-  // updateTick(index: number, tick: PlannedTick) {
-  //   this.repo.rotation$().pipe(take(1)).subscribe(ticks => {
-  //     ticks[index] = tick;
-
-  //     this.repo.setExpectedRotation(ticks);
-  //   }).unsubscribe();
-  // }
-
-  // removeTick(index: number) {
-  //   this.repo.rotation$().pipe(take(1)).subscribe(ticks => {
-  //     ticks.splice(index, 1);
-
-  //     this.repo.setExpectedRotation(ticks);
-  //   }).unsubscribe();
-  // }
-
+    }, "");
+  }
 }

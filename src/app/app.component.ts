@@ -14,7 +14,7 @@ import { KeybindRepository } from './runescape/keybind-repository.service';
 })
 export class AppComponent implements OnInit {
 
-  public showRotations: boolean = false;
+  public showRotations: boolean = true;
   public showKeybindConfigurator: boolean = false;
 
   public countDown$?: Observable<number>;
@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
 
     this.isGameCompleted$ = combineLatest([repo.ticks$(), repo.rotation$()])
       .pipe(
-        map(([ticks, rotation]) => ticks.length > rotation.length),
+        map(([ticks, rotation]) => ticks.length > rotation.ticks.length),
         startWith(false),
       );
 
@@ -90,47 +90,47 @@ export class AppComponent implements OnInit {
   }
 
   loadRotation() {
-    // This is the telos p1 rotation with my new 2023 binds
-    this.keybinds.keybinds$().subscribe(keybinds => {
-      this.game.setRotation(tickFactory([
-        ['Target cycle', 'Greater Sunshine', 'Inquisitor staff'],
-        [],
-        [],
-        ['Blood Blitz', 'Wand of the praesul', 'Imperium core', 'Greater Concentrated Blast'],
-        [],
-        [],
-        ['Masterwork Spear of Annihilation', 'Ingenuity of the Humans', 'Essence of Finality spec', 'Inquisitor staff'],
-        [],
-        [],
-        ['Combust', 'Wand of the praesul', 'Imperium core'],
-        [],
-        [],
-        ['Smoke Cloud', 'Freedom', 'Inquisitor staff'],
-        [],
-        [],
-        ['Ice Barrage', 'Wand of the praesul', 'Imperium core', 'Greater Concentrated Blast'],
-        [],
-        [],
-        ['Inquisitor staff', 'Dragon Breath'],
-        [],
-        [],
-        ['Ice Barrage', 'Wild Magic'],
-        [],
-        [],
-        ['Wrack'],
-        [],
-        [],
-        ['Blood Blitz', 'Wand of the praesul', 'Imperium core', 'Greater Concentrated Blast'],
-        [],
-        [],
-        ['Inquisitor staff', 'Omnipower'],
-        [],
-        [],
-        ['Tsunami'],
-        [],
-        ['Dive'],
-        ['Dragon Breath']
-      ], keybinds));
-    });
+    // // This is the telos p1 rotation with my new 2023 binds
+    // this.keybinds.keybinds$().subscribe(keybinds => {
+    //   this.game.setRotation(tickFactory([
+    //     ['Target cycle', 'Greater Sunshine', 'Inquisitor staff'],
+    //     [],
+    //     [],
+    //     ['Blood Blitz', 'Wand of the praesul', 'Imperium core', 'Greater Concentrated Blast'],
+    //     [],
+    //     [],
+    //     ['Masterwork Spear of Annihilation', 'Ingenuity of the Humans', 'Essence of Finality spec', 'Inquisitor staff'],
+    //     [],
+    //     [],
+    //     ['Combust', 'Wand of the praesul', 'Imperium core'],
+    //     [],
+    //     [],
+    //     ['Smoke Cloud', 'Freedom', 'Inquisitor staff'],
+    //     [],
+    //     [],
+    //     ['Ice Barrage', 'Wand of the praesul', 'Imperium core', 'Greater Concentrated Blast'],
+    //     [],
+    //     [],
+    //     ['Inquisitor staff', 'Dragon Breath'],
+    //     [],
+    //     [],
+    //     ['Ice Barrage', 'Wild Magic'],
+    //     [],
+    //     [],
+    //     ['Wrack'],
+    //     [],
+    //     [],
+    //     ['Blood Blitz', 'Wand of the praesul', 'Imperium core', 'Greater Concentrated Blast'],
+    //     [],
+    //     [],
+    //     ['Inquisitor staff', 'Omnipower'],
+    //     [],
+    //     [],
+    //     ['Tsunami'],
+    //     [],
+    //     ['Dive'],
+    //     ['Dragon Breath']
+    //   ], keybinds));
+    // });
   }
 }

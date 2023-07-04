@@ -22,6 +22,7 @@
     flex-direction: column;
     border: 1px solid black;
     border-radius: 3px;
+    gap: 5px;
 
     .preview-header {
       display: flex;
@@ -49,4 +50,13 @@
       flex-direction: row;
     }
   }
+}
+
+.add-icon {
+  font-size: 40pt;
+  height: unset;
+  width: unset;
+  border: 2px dashed #2E4053;
+  border-radius: 5px;
+  color: #2E4053;
 }

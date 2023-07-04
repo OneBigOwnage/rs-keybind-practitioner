@@ -2,9 +2,9 @@ import { Injectable } from "@angular/core";
 import TickRepository from "./TickRepository.service";
 import { GameLoop } from "./GameLoop.service";
 import { InputHandler } from "./InputHandler.service";
-import { PlannedTick } from "./Interactions";
 import { BehaviorSubject, combineLatest } from "rxjs";
 import { filter, map, takeWhile } from "rxjs/operators";
+import { Rotation } from "./rotation-repository.service";
 
 export type Difficulty = 'BEGINNER' | 'INTERMEDIATE' | 'EXPERT';
 
@@ -28,7 +28,7 @@ export default class Game {
     // We automatically stop the game loop from running when the rotation is complete.
     combineLatest([this.repo.rotation$(), this.repo.ticks$()])
       .pipe(
-        map(([rotation, ticks]) => ticks.length > rotation.length),
+        map(([rotation, ticks]) => ticks.length > rotation.ticks.length),
         takeWhile(bool => !bool, true),
         filter(bool => bool)
       )
@@ -41,7 +41,7 @@ export default class Game {
     this.loop.stop();
   }
 
-  public setRotation(rotation: PlannedTick[]) {
+  public setRotation(rotation: Rotation) {
     this.repo.setExpectedRotation(rotation);
   }
 

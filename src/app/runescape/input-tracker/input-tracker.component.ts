@@ -23,7 +23,7 @@ export class InputTrackerComponent implements OnInit {
         filter(([ticks]) => ticks.length > 0),
         map(([ticks, rotation]) => {
           let index = ticks.length - 1;
-          let rotationTick = rotation[index];
+          let rotationTick = rotation.ticks[index];
 
           return { gameTick: ticks[index], rotationTick: rotationTick };
         }),
@@ -43,7 +43,7 @@ export class InputTrackerComponent implements OnInit {
       .pipe(map(([ticks, rotation]) => {
         let index = ticks.length;
 
-        return rotation.slice(index, index + 3);
+        return rotation.ticks.slice(index, index + 3);
       }));
   }
 
