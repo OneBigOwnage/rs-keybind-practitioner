@@ -23,16 +23,16 @@
     <button (click)="this.startGame()">{{ (this.isGameRunning$ | async ) ? 'Reset' : 'Start' }} game loop</button>
     <button (click)="this.game.stopGameLoop()">Stop game loop</button>
 
-    <button *ngIf="this.canShowRotationBuilder()" (click)="showRotationBuilder = true">
-      Rotation builder
+    <button *ngIf="this.canShowRotationBuilder()" (click)="showRotations = true">
+      Rotations
     </button>
 
     <button *ngIf="this.canShowKeybindConfigurator()" (click)="showKeybindConfigurator = true">
-      Keybind configurator
+      Keybinds
     </button>
 
     <button *ngIf="this.canShowGame()"
-      (click)="this.showKeybindConfigurator = false; this.showRotationBuilder = false;">
+      (click)="this.showKeybindConfigurator = false; this.showRotations = false;">
       Back to game
     </button>
 
@@ -40,7 +40,7 @@
 
   <app-keybind-configurator *ngIf="showKeybindConfigurator"></app-keybind-configurator>
 
-  <app-rotation-builder *ngIf="showRotationBuilder"></app-rotation-builder>
+  <app-rotations-overview *ngIf="showRotations"></app-rotations-overview>
 
   <ng-container *ngIf="this.showGame">
     <div style="display: grid; grid-template-columns: 3fr 1fr 3fr;">

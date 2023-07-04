@@ -14,7 +14,7 @@ import { KeybindRepository } from './runescape/keybind-repository.service';
 })
 export class AppComponent implements OnInit {
 
-  public showRotationBuilder: boolean = false;
+  public showRotations: boolean = false;
   public showKeybindConfigurator: boolean = false;
 
   public countDown$?: Observable<number>;
@@ -68,19 +68,19 @@ export class AppComponent implements OnInit {
   }
 
   public get showGame() {
-    return !this.showRotationBuilder && !this.showKeybindConfigurator;
+    return !this.showRotations && !this.showKeybindConfigurator;
   }
 
   public canShowRotationBuilder() {
-    return !this.showRotationBuilder && !this.showKeybindConfigurator;
+    return !this.showRotations && !this.showKeybindConfigurator;
   }
 
   public canShowKeybindConfigurator() {
-    return !this.showRotationBuilder && !this.showKeybindConfigurator;
+    return !this.showRotations && !this.showKeybindConfigurator;
   }
 
   public canShowGame() {
-    return this.showRotationBuilder || this.showKeybindConfigurator;
+    return this.showRotations || this.showKeybindConfigurator;
   }
 
   public onDifficultyChange(event: Event, difficulty: Difficulty) {

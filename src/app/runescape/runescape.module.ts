@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RotationBuilderComponent } from './rotation-builder/rotation-builder.component';
+import { RotationsOverview } from './rotations-overview/rotations-overview.component';
 import { FormsModule } from '@angular/forms';
 import { TimeVisualizerComponent } from './time-visualizer/time-visualizer.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,7 +12,7 @@ import { KeybindConfiguratorComponent } from './keybind-configurator/keybind-con
 
 @NgModule({
   declarations: [
-    RotationBuilderComponent,
+    RotationsOverview,
     TimeVisualizerComponent,
     InputTrackerComponent,
     InputTrackerTickComponent,
@@ -26,7 +26,7 @@ import { KeybindConfiguratorComponent } from './keybind-configurator/keybind-con
     MatIconModule,
   ],
   exports: [
-    RotationBuilderComponent,
+    RotationsOverview,
     TimeVisualizerComponent,
     InputTrackerComponent,
     InputTrackerTickComponent,
