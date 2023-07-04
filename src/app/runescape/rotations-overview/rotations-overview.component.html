@@ -1,0 +1,29 @@
+<section class="container">
+  <h1>Rotations</h1>
+
+
+  <div class="previews-container">
+    <div *ngFor="let rotation of [1, 2, 2, 1, 1, 1, 1, 1]" class="rotation-preview">
+      <div class="preview-header">
+        <h2 title="Mage Telos P1 (1000%+) something something">Mage Telos P1 (1000%+) something something</h2>
+        <div class="rotation-action-buttons">
+          <button>Practise</button>
+          <button>Edit</button>
+        </div>
+      </div>
+
+      <div class="preview-actions">
+        <img *ngFor="let action of [1, 2, 3, 4, 5, 6]"
+          [src]="'/assets/Runescape ability icons/' + 'Wrack' + '.png'" alt=""
+          style="height: 60px; width: 60px; align-self: center;" width="60" height="60">
+      </div>
+    </div>
+  </div>
+
+  <!-- <div>
+    <button (click)="addTick()">Add new tick to rotation</button>
+  </div> -->
+
+  <!-- <app-rotation-builder-tick *ngFor="let tick of this.repo.rotation$() | async; index as index;" [tick]="tick"
+    (onEdit)="this.updateTick(index, tick)" (onDelete)="this.removeTick(index)"></app-rotation-builder-tick> -->
+</section>

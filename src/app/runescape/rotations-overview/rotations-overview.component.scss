@@ -1,0 +1,52 @@
+.container {
+  width: calc(100% - 718px);
+  padding-left: 359px;
+  padding-right: 235px;
+  padding-bottom: 30px;
+
+  .previews-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 5px;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  .rotation-preview {
+    width: 380px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    border-radius: 3px;
+
+    .preview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      h2 {
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-width: 0;
+      }
+
+      .rotation-action-buttons {
+        display: flex;
+        justify-content: space-between;
+        gap: 5px;
+      }
+    }
+
+    .preview-actions {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row;
+    }
+  }
+}
