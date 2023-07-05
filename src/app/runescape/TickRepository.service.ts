@@ -1,25 +1,37 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, ReplaySubject } from "rxjs";
+import { BehaviorSubject, Observable, ReplaySubject, combineLatest } from "rxjs";
 import { Interaction, MissedAction, SuccessfullyPerformedAction, Tick, UnexpectedKeyPress } from "./Interactions";
 import { UserInput } from "./InputHandler.service";
 import { map, take } from "rxjs/operators";
-import { Rotation } from "./rotation-repository.service";
+import { AbilityRotation, AbilityRotationWithKeybinds } from "./rotation-repository.service";
+import { KeybindRepository } from "./keybind-repository.service";
 
 @Injectable({ providedIn: "root" })
 export default class TickRepository {
   /** The list of ticks with their associated expected interactions. */
-  protected rotation: ReplaySubject<Rotation> = new ReplaySubject<Rotation>(1);
+  protected rotation: ReplaySubject<AbilityRotation> = new ReplaySubject<AbilityRotation>(1);
+
+  /** The list of ticks with their associated expected abilities and keybinds */
+  protected rotationWithKeybinds: ReplaySubject<AbilityRotationWithKeybinds> = new ReplaySubject<AbilityRotationWithKeybinds>(1);
 
   /** The list of ticks that have happened in the game. */
   protected ticks: BehaviorSubject<Tick[]> = new BehaviorSubject<Tick[]>([]);
 
-  constructor() { }
+  constructor(public keybindRepository: KeybindRepository) {
+    combineLatest([this.rotation, this.keybindRepository.keybinds$()]).subscribe(([rotation, keybinds]) => {
+      this.rotationWithKeybinds.next(rotation.withKeybinds(keybinds));
+    });
+   }
 
-  public rotation$(): Observable<Rotation> {
+  public rotation$(): Observable<AbilityRotation> {
     return this.rotation.asObservable();
   }
 
-  public setExpectedRotation(rotation: Rotation) {
+  public rotationWithKeybinds$(): Observable<AbilityRotationWithKeybinds> {
+    return this.rotationWithKeybinds.asObservable();
+  }
+
+  public setExpectedRotation(rotation: AbilityRotation) {
     this.rotation.next(rotation);
   }
 
@@ -28,7 +40,7 @@ export default class TickRepository {
   }
 
   public tick() {
-    this.rotation.pipe(take(1)).subscribe(rotation => {
+    this.rotationWithKeybinds.pipe(take(1)).subscribe(rotation => {
       if (rotation.ticks.length === 0 || this.ticks.value.length === 0 || this.ticks.value.length > rotation.ticks.length) {
         this.ticks.next([...this.ticks.value, new Tick()]);
         return;
@@ -41,7 +53,7 @@ export default class TickRepository {
       // At the end of the tick, we need to check if there's any missed interactions.
       let indexToStartTakeMissing = recordedTick.interactions.filter(interaction => interaction instanceof SuccessfullyPerformedAction || interaction instanceof MissedAction).length;
 
-      if (indexToStartTakeMissing < plannedTick.interactions.length) {
+      if (indexToStartTakeMissing < plannedTick.actions.length) {
         recordedTick.interactions.push(...plannedTick.interactions.slice(indexToStartTakeMissing).map(interaction => new MissedAction(interaction.keybind)));
       }
 
@@ -54,7 +66,7 @@ export default class TickRepository {
   }
 
   public recordUserInput(input: UserInput) {
-    this.rotation.pipe(take(1)).subscribe(rotation => {
+    this.rotationWithKeybinds.pipe(take(1)).subscribe(rotation => {
       if (this.ticks.value.length === 0) {
 
         return;
@@ -64,7 +76,7 @@ export default class TickRepository {
       let recordedTick = ticks[ticks.length - 1];
 
       // If we don't expect any user input at all, we can skip all logic and simply add an unexpected interaction.
-      if (rotation.ticks.length === 0 || rotation.ticks.length < ticks.length || rotation.ticks[ticks.length - 1].interactions.length === 0) {
+      if (rotation.ticks.length === 0 || rotation.ticks.length < ticks.length || rotation.ticks[ticks.length - 1].actions.length === 0) {
         recordedTick.interactions.push(new UnexpectedKeyPress(input.key));
         ticks[ticks.length - 1] = recordedTick;
         this.ticks.next(ticks);

@@ -30,7 +30,7 @@ export class KeybindRepository {
 
     this.keybinds.subscribe(value => localStorage.setItem('keybinds', JSON.stringify(value)));
 
-    (window as any).seed = () => this.seed();
+    (window as any).seedKeybinds = () => this.seed();
   }
 
   public keybinds$(): Observable<Keybind[]> {
@@ -64,7 +64,7 @@ export class KeybindRepository {
   public seed(): void {
     // Matching keybinds for the telos p1 rotation
     this.storeOrUpdate(keybindFactory("CTRL-E", "Greater Sunshine"));
-    this.storeOrUpdate(keybindFactory("B", "Target cycle"));
+    this.storeOrUpdate(keybindFactory("X", "Target cycle"));
     this.storeOrUpdate(keybindFactory("A", "Inquisitor staff"));
     this.storeOrUpdate(keybindFactory("1", "Blood Blitz"));
     this.storeOrUpdate(keybindFactory("S", "Wand of the praesul"));
@@ -72,7 +72,7 @@ export class KeybindRepository {
     this.storeOrUpdate(keybindFactory("T", "Greater Concentrated Blast"));
     this.storeOrUpdate(keybindFactory("ALT-3", "Masterwork Spear of Annihilation"));
     this.storeOrUpdate(keybindFactory("ALT-B", "Ingenuity of the Humans"));
-    this.storeOrUpdate(keybindFactory("X", "Essence of Finality spec"));
+    this.storeOrUpdate(keybindFactory("B", "Essence of Finality spec"));
     this.storeOrUpdate(keybindFactory("V", "Combust"));
     this.storeOrUpdate(keybindFactory("H", "Smoke Cloud"));
     this.storeOrUpdate(keybindFactory("Z", "Freedom"));

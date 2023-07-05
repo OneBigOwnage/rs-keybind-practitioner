@@ -18,7 +18,7 @@ export class InputTrackerComponent implements OnInit {
   constructor(protected repo: TickRepository) {
     this.previousTicks$ = repo.ticks$().pipe(map(ticks => ticks.slice(-4, -1)));
 
-    this.currentTick$ = combineLatest([repo.ticks$(), repo.rotation$()])
+    this.currentTick$ = combineLatest([repo.ticks$(), repo.rotationWithKeybinds$()])
       .pipe(
         filter(([ticks]) => ticks.length > 0),
         map(([ticks, rotation]) => {
@@ -39,7 +39,7 @@ export class InputTrackerComponent implements OnInit {
           return new Tick(interactions.concat(shoulds));
         }));
 
-    this.upcomingTicks$ = combineLatest([repo.ticks$(), repo.rotation$()])
+    this.upcomingTicks$ = combineLatest([repo.ticks$(), repo.rotationWithKeybinds$()])
       .pipe(map(([ticks, rotation]) => {
         let index = ticks.length;
 

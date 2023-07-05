@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { KeybindRepository, keybindFactory } from '../keybind-repository.service';
 import { InputHandler } from '../InputHandler.service';
 
@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
   templateUrl: './keybind-configurator.component.html',
   styleUrls: ['./keybind-configurator.component.scss']
 })
-export class KeybindConfiguratorComponent {
+export class KeybindConfiguratorComponent implements OnInit, OnDestroy {
   public actions = RunescapeActions;
 
   protected actionTarget: RunescapeAction | undefined;
@@ -23,6 +23,16 @@ export class KeybindConfiguratorComponent {
         this.clearActionTarget();
       }
     });
+
+    console.log('constructor')
+  }
+
+  public ngOnInit(): void {
+    this.input.startCapturing();
+  }
+
+  public ngOnDestroy(): void {
+    this.input.stopCapturing();
   }
 
   public setActionTarget(action: RunescapeAction) {

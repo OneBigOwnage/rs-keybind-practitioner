@@ -1,0 +1,95 @@
+<section>
+  <div style="margin-bottom: 10px; display: flex; justify-content: center;">
+    <label for="rotation-name" style="margin-right: 5px;">Rotation name</label>
+    <input type="text" [(ngModel)]="this.rotationName" (change)="this.setName()">
+  </div>
+  <div class="ticks-container">
+    <div *ngFor="let tick of rotation.ticks; index as tickIndex;" class="tick">
+      <header>
+        <button (click)="this.moveTickLeft(tick)">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+
+        <div style="display: flex; gap: 10px;">
+          <h2>Tick</h2>
+          <button (click)="this.removeTick(tick)">
+            <mat-icon>delete_forever</mat-icon>
+          </button>
+        </div>
+
+        <button (click)="this.moveTickRight(tick)">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </header>
+      <div style="margin-right: -15px; margin-left: -15px;">
+        <hr>
+      </div>
+      <div class="tick--actions-container">
+        <div *ngFor="let action of tick.actions; index as actionIndex" class="action">
+          <img [src]="action.iconURL()" width="60" height="60" onerror="this.style.opacity = 0;">
+          <kbd
+            *ngIf="this.findKeyCombinationForAction(action) | async; let keyCombination; else noKeyCombinationWarning"
+            class="kbc-button">
+            {{ keyCombination }}
+          </kbd>
+          <ng-template #noKeyCombinationWarning>
+            <kbd class="kbc-button kbc-button-warning no-key-combination-set-warning">
+              <mat-icon>error_outline</mat-icon> No keybind set!
+            </kbd>
+          </ng-template>
+          <div class="buttons-container">
+            <button (click)="this.moveActionLeft(tick, action)">
+              <mat-icon>chevron_left</mat-icon>
+            </button>
+
+            <button (click)="this.removeAction(tickIndex, actionIndex)">
+              <mat-icon>delete_forever</mat-icon>
+            </button>
+
+            <button (click)="this.moveActionRight(tick, action)">
+              <mat-icon>chevron_right</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <button (click)="this.showAddAction = tickIndex" *ngIf="this.showAddAction !== tickIndex" style="padding: 0;">
+          <mat-icon>add</mat-icon>
+        </button>
+
+        <div *ngIf="this.showAddAction === tickIndex" class="add-action">
+          <select #selectRef (change)="this.onSelectionChange(tickIndex, selectRef)">
+            <option></option>
+            <option *ngFor="let action of this.allAvailableActions" [value]="action">
+              {{ action }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="tick new-tick">
+      <header>
+        <h2>Add tick</h2>
+      </header>
+      <button (click)="this.addTick()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+
+  </div>
+
+  <h1 style="margin-top: 50px; margin-left: 20px;">Rotation preview</h1>
+  <div class="rotation-preview">
+    <div *ngFor="let tick of this.rotation.ticks; last as last" style="display: flex; align-items: center;" [style.display]="tick.actions.length === 0 ? 'none' : 'flex'">
+      <ng-container *ngIf="tick.actions.length > 0">
+        <div class="tick-preview">
+          <img *ngFor="let action of tick.actions" [src]="action.iconURL()" width="30" height="30">
+        </div>
+        <ng-container *ngIf="!last">
+          <mat-icon>east</mat-icon>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+
+</section>

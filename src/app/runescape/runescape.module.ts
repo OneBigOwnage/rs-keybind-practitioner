@@ -9,6 +9,7 @@ import { InputTrackerTickComponent } from './input-tracker-tick/input-tracker-ti
 import { RotationBuilderTickComponent } from './rotation-builder-tick/rotation-builder-tick.component';
 import { TrackerResultsComponent } from './tracker-results/tracker-results.component';
 import { KeybindConfiguratorComponent } from './keybind-configurator/keybind-configurator.component';
+import { RotationEditorComponent } from './rotation-editor/rotation-editor.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { KeybindConfiguratorComponent } from './keybind-configurator/keybind-con
     RotationBuilderTickComponent,
     TrackerResultsComponent,
     KeybindConfiguratorComponent,
+    RotationEditorComponent,
   ],
   imports: [
     CommonModule,

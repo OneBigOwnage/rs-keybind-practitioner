@@ -1,0 +1,107 @@
+.ticks-container {
+  display: flex;
+  gap: 5px;
+  width: fit-content;
+  max-width: calc(100vw - 30px);
+  overflow-x: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+
+  .tick {
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 15px;
+    padding-top: 5px;
+    display: flex;
+    flex-direction: column;
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+
+      h2 {
+        width: 100%;
+        text-align: center;
+        margin: 0;
+        margin-bottom: 5px;
+      }
+    }
+  }
+
+  .new-tick {
+    border-style: dashed;
+    justify-content: center;
+    font-style: italic;
+    min-width: 110px;
+    gap: 30px;
+
+    button {
+      align-self: center;
+    }
+  }
+
+  .tick--actions-container {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 5px;
+
+    &:empty {
+      min-width: 10px;
+    }
+
+    .action {
+      align-self: stretch;
+      border: 1px solid black;
+      border-radius: 5px;
+      padding: 5px;
+      min-width: 70px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      gap: 5px;
+
+      .kbc-button {
+        min-width: max-content;
+      }
+
+      .buttons-container {
+        align-self: stretch;
+        display: flex;
+        justify-content: space-between;
+        gap: 3px;
+      }
+
+      .no-key-combination-set-warning {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+    }
+  }
+}
+
+.rotation-preview {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-left: 50px;
+  padding-right: 50px;
+
+  .tick-preview {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 3px;
+  }
+}

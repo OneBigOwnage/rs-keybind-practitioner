@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import Game, { Difficulty } from './runescape/Game.service';
-import { tickFactory } from './runescape/Interactions';
 import { Observable, combineLatest, timer } from 'rxjs';
 import { filter, finalize, map, startWith, take } from 'rxjs/operators';
 import TickRepository from './runescape/TickRepository.service';
@@ -14,7 +13,7 @@ import { KeybindRepository } from './runescape/keybind-repository.service';
 })
 export class AppComponent implements OnInit {
 
-  public showRotations: boolean = true;
+  public showRotations: boolean = false;
   public showKeybindConfigurator: boolean = false;
 
   public countDown$?: Observable<number>;

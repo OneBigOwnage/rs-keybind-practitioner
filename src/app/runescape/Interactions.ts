@@ -1,5 +1,5 @@
 import { RunescapeAction } from "./RunescapeActions";
-import { Keybind } from "./keybind-repository.service";
+import { Ability, Keybind } from "./keybind-repository.service";
 
 export class ShouldPerformAction {
   constructor(public readonly keybind: Keybind) { }
@@ -71,24 +71,37 @@ export class Tick {
 }
 
 export class PlannedTick {
-  constructor(public interactions: PlannedInteraction[] = []) { }
+  constructor(public actions: Ability[] = []) { }
+
+  public withKeybinds(keybinds: Keybind[]): PlannedTickWithKeybind {
+    return new PlannedTickWithKeybind(
+      this.actions.map(action => {
+        let keybind = keybinds.find(keybind => keybind.ability.name === action.name);
+
+        if (keybind === undefined) {
+          throw new Error('No keybind found for ' + action.name);
+        }
+
+        return new ShouldPerformAction(keybind);
+      })
+    );
+  }
 
   public toString(): string {
-    return '[' + this.interactions.map(interaction => interaction.toString()).join(', ') + ']';
+    if (this.actions.length === 0) {
+      return '<empty>';
+    }
+
+    return '[' + this.actions.map(interaction => interaction.toString()).join(', ') + ']';
   }
 }
 
-export function tickFactory(input: RunescapeAction[][], keybinds: Keybind[]): PlannedTick[] {
-  return input.map(actions => {
-    return new PlannedTick(actions.map(action => {
-      const keybind = keybinds.find(keybind => keybind.ability.name === action);
+export class PlannedTickWithKeybind extends PlannedTick {
+  constructor(public interactions: PlannedInteraction[] = []) {
+    super(interactions.map(interaction => interaction.keybind.ability));
+  }
+}
 
-      if (!keybind) {
-        throw new Error('No keybind found for action ' + action);
-      }
-
-      return new ShouldPerformAction(keybind);
-    }));
-
-  });
+export function tickFactory(input: RunescapeAction[][]): PlannedTick[] {
+  return input.map(actions => new PlannedTick(actions.map(action => new Ability(action))));
 }

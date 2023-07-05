@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { take } from 'rxjs/operators';
-import TickRepository from '../TickRepository.service';
-import { PlannedTick } from '../Interactions';
-import { Rotation, RotationRepository } from '../rotation-repository.service';
+import { AbilityRotation, RotationRepository } from '../rotation-repository.service';
 import Game from '../Game.service';
+import { BehaviorSubject } from 'rxjs';
+import { Ability, KeybindRepository } from '../keybind-repository.service';
 
 @Component({
   selector: 'app-rotations-overview',
@@ -12,13 +11,25 @@ import Game from '../Game.service';
 })
 export class RotationsOverview implements OnInit {
 
-  constructor(public repo: RotationRepository, public game: Game) { }
+  public rotationToEdit: BehaviorSubject<AbilityRotation | undefined> = new BehaviorSubject<AbilityRotation | undefined>(undefined);
+
+  constructor(public repo: RotationRepository, public game: Game, public keybinds: KeybindRepository) {
+    // this.repo.rotations$().subscribe(rotations => {
+    //   if (this.rotationToEdit.value === undefined) {
+    //     this.rotationToEdit.next(rotations[0]);
+    //   }
+    // });
+  }
 
   ngOnInit(): void {
   }
 
   public createNew(): void {
-    this.repo.addRotation(new Rotation(this.randomID(), 'My first rotation', []));
+    this.repo.addRotation(new AbilityRotation(this.randomID(), 'New rotation', []));
+  }
+
+  public actionsPreview(rotation: AbilityRotation): Ability[] {
+    return rotation.ticks.reduce((result: Ability[], tick) => result = result.concat(tick.actions), []).slice(0, 6);
   }
 
   protected randomID(): string {

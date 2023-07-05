@@ -16,8 +16,18 @@ export class InputHandler {
 
   protected allKeyPresses = new BehaviorSubject<KeyPress[]>([]);
 
+  protected shouldCapture = false;
+
   constructor() {
     this.registerListeners();
+  }
+
+  public startCapturing(): void {
+    this.shouldCapture = true;
+  }
+
+  public stopCapturing(): void {
+    this.shouldCapture = false;
   }
 
   public keyPresses$(): Observable<KeyPress> {
@@ -30,6 +40,10 @@ export class InputHandler {
 
   protected registerListeners() {
     document.addEventListener('keydown', (event: KeyboardEvent) => {
+      if (!this.shouldCapture) {
+        return;
+      }
+
       event.preventDefault();
       event.stopPropagation();
 
@@ -37,6 +51,10 @@ export class InputHandler {
     });
 
     document.addEventListener('keyup', (event: KeyboardEvent) => {
+      if (!this.shouldCapture) {
+        return;
+      }
+
       event.preventDefault();
       event.stopPropagation();
 

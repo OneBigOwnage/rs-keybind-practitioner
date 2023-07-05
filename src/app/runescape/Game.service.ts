@@ -4,7 +4,7 @@ import { GameLoop } from "./GameLoop.service";
 import { InputHandler } from "./InputHandler.service";
 import { BehaviorSubject, combineLatest } from "rxjs";
 import { filter, map, takeWhile } from "rxjs/operators";
-import { Rotation } from "./rotation-repository.service";
+import { AbilityRotation } from "./rotation-repository.service";
 
 export type Difficulty = 'BEGINNER' | 'INTERMEDIATE' | 'EXPERT';
 
@@ -24,6 +24,7 @@ export default class Game {
 
   public startGameLoop() {
     this.repo.clearTicks();
+    this.input.startCapturing();
 
     // We automatically stop the game loop from running when the rotation is complete.
     combineLatest([this.repo.rotation$(), this.repo.ticks$()])
@@ -32,16 +33,17 @@ export default class Game {
         takeWhile(bool => !bool, true),
         filter(bool => bool)
       )
-      .subscribe(() => this.loop.stop());
+      .subscribe(() => this.stopGameLoop());
 
     this.loop.start();
   }
 
   public stopGameLoop() {
     this.loop.stop();
+    this.input.stopCapturing();
   }
 
-  public setRotation(rotation: Rotation) {
+  public setRotation(rotation: AbilityRotation) {
     this.repo.setExpectedRotation(rotation);
   }
 

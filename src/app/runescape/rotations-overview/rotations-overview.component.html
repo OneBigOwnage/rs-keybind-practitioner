@@ -1,4 +1,4 @@
-<section class="container">
+<section *ngIf="(this.rotationToEdit | async) === undefined" class="container">
   <h1>Rotations</h1>
 
   <div class="previews-container">
@@ -7,7 +7,7 @@
         <h2 [title]="rotation.name">{{ rotation.name }}</h2>
         <div class="rotation-action-buttons">
           <button (click)="this.game.setRotation(rotation)">Practise</button>
-          <button>Edit</button>
+          <button (click)="this.rotationToEdit.next(rotation)">Edit</button>
           <button (click)="this.repo.removeRotation(rotation)">
             <mat-icon>delete_forever</mat-icon>
           </button>
@@ -15,7 +15,7 @@
       </div>
 
       <div class="preview-actions">
-        <img *ngFor="let action of [1, 2, 3, 4, 5, 6]" [src]="'/assets/Runescape ability icons/' + 'Wrack' + '.png'"
+        <img *ngFor="let action of this.actionsPreview(rotation)" [src]="action.iconURL()"
           alt="" style="height: 60px; width: 60px; align-self: center;" width="60" height="60">
       </div>
     </div>
@@ -33,3 +33,5 @@
 
   </div>
 </section>
+
+<app-rotation-editor *ngIf="this.rotationToEdit | async; let rotationToEdit" [rotation]="rotationToEdit"></app-rotation-editor>
