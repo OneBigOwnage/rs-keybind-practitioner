@@ -144,6 +144,10 @@ export default class TickRepository {
           return;
         }
 
+        if (index === rotation.ticks.length - 1) {
+          return;
+        }
+
         const hasGcdIncurringAction = tick.actions.some(action => !NonGCDActions.includes(action.name as any));
 
         if (hasGcdIncurringAction) {
