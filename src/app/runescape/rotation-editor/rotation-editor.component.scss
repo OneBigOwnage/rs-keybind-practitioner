@@ -61,7 +61,6 @@
       border: 1px solid black;
       border-radius: 5px;
       padding: 5px;
-      min-width: 70px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -93,6 +92,7 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  row-gap: 20px;
   padding-left: 50px;
   padding-right: 50px;
 
@@ -104,4 +104,8 @@
     border-radius: 5px;
     padding: 3px;
   }
+}
+
+.tick-preview:empty {
+    margin-right: 5px;
 }
