@@ -31,8 +31,7 @@
       Keybinds
     </button>
 
-    <button *ngIf="this.canShowGame()"
-      (click)="this.showKeybindConfigurator = false; this.showRotations = false;">
+    <button *ngIf="this.canShowGame()" (click)="this.showKeybindConfigurator = false; this.showRotations = false;">
       Back to game
     </button>
 
@@ -56,6 +55,9 @@
       </div>
     </ng-container>
 
+    <app-gcd-animation #gcdAnimation></app-gcd-animation>
+
     <app-tracker-results *ngIf="true || (this.isGameCompleted$ | async)"></app-tracker-results>
+
   </ng-container>
 </main>

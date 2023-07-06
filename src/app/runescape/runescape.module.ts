@@ -10,6 +10,8 @@ import { RotationBuilderTickComponent } from './rotation-builder-tick/rotation-b
 import { TrackerResultsComponent } from './tracker-results/tracker-results.component';
 import { KeybindConfiguratorComponent } from './keybind-configurator/keybind-configurator.component';
 import { RotationEditorComponent } from './rotation-editor/rotation-editor.component';
+import { GcdAnimationComponent } from './gcd-animation/gcd-animation.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -21,11 +23,13 @@ import { RotationEditorComponent } from './rotation-editor/rotation-editor.compo
     TrackerResultsComponent,
     KeybindConfiguratorComponent,
     RotationEditorComponent,
+    GcdAnimationComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
     MatIconModule,
+    BrowserAnimationsModule,
   ],
   exports: [
     RotationsOverview,
@@ -35,6 +39,7 @@ import { RotationEditorComponent } from './rotation-editor/rotation-editor.compo
     RotationBuilderTickComponent,
     TrackerResultsComponent,
     KeybindConfiguratorComponent,
+    GcdAnimationComponent,
   ],
 })
 export class RunescapeModule { }

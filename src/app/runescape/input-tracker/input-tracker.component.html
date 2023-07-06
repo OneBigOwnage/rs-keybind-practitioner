@@ -3,7 +3,7 @@
   [style]="'grid-column-start: ' + (4 - count + index) + '; opacity: ' + (index === 0 ? '0.2' : index === 1 ? '0.4' : '0.7')">
 </app-input-tracker-tick>
 
-<app-input-tracker-tick *ngIf="(currentTick$ | async) as currentTick" [tick]="currentTick"
+<app-input-tracker-tick *ngIf="(currentTick$ | async) as currentTick" [tick]="currentTick" [gcd]="(this.doesCurrenttickIncurGCD | async) ?? false"
   context="CURRENT"></app-input-tracker-tick>
 
 <app-input-tracker-tick *ngFor="let tick of upcomingTicks$ | async; index as index" [tick]="tick" context="UPCOMING"

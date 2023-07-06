@@ -21,6 +21,10 @@ export class InputTrackerTickComponent implements OnInit {
   @Input({ required: true })
   context!: InputTrackerTickContextType;
 
+  @Input()
+  gcd: boolean = false;
+
+
   constructor(public game: Game, public repo: KeybindRepository) { }
 
   ngOnInit(): void {

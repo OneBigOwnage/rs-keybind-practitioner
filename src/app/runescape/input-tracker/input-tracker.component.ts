@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import TickRepository from '../TickRepository.service';
-import { Observable, combineLatest } from 'rxjs';
+import { Observable, combineLatest, of } from 'rxjs';
 import { Interaction, MissedAction, PlannedTick, SuccessfullyPerformedAction, Tick } from '../Interactions';
 import { filter, map } from 'rxjs/operators';
 
@@ -14,6 +14,8 @@ export class InputTrackerComponent implements OnInit {
   public previousTicks$: Observable<Tick[]>;
   public currentTick$: Observable<Tick>;
   public upcomingTicks$: Observable<Tick[]>;
+  public currentTickIndex: Observable<number | undefined>;
+  public doesCurrenttickIncurGCD: Observable<boolean> = of(false);
 
   constructor(protected repo: TickRepository) {
     this.previousTicks$ = repo.ticks$().pipe(map(ticks => ticks.slice(-4, -1)));
@@ -45,6 +47,18 @@ export class InputTrackerComponent implements OnInit {
 
         return rotation.ticks.slice(index, index + 3);
       }));
+
+    this.currentTickIndex = repo.ticks$().pipe(map(ticks => ticks.length - 1));
+
+    this.doesCurrenttickIncurGCD = combineLatest([this.currentTickIndex, repo.GCDIncurringTicks$()])
+      .pipe(
+        map(([index, indexes]) => {
+          if (index === undefined) {
+            return false;
+          }
+
+          return indexes.includes(index);
+        }));
   }
 
   ngOnInit(): void {

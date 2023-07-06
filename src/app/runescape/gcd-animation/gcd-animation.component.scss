@@ -1,0 +1,29 @@
+// @keyframes countDown {
+//     to {
+//         stroke-dasharray: 100 100;
+//     }
+// }
+
+svg {
+    margin: auto;
+    display: block;
+    background-color: #ccc;
+    border-radius: 50%;
+    height: auto;
+    max-width: 100%;
+    transform: rotate(-90deg);
+    width: 250px;
+    min-height: 250px;
+}
+
+.svg-outer-circle {
+    fill: none;
+    stroke-dasharray: 0 1000;
+    stroke-width: 150;
+    stroke: gold;
+}
+
+.svg-inner-circle {
+    box-shadow: inset 0px 0px 0px 2px #ffffff;
+    fill: #fff;
+}

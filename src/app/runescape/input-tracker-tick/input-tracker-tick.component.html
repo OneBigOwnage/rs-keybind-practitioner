@@ -1,3 +1,7 @@
+<ng-container *ngIf="this.gcd">
+  <mat-icon>crisis_alert</mat-icon>
+</ng-container>
+
 <ng-container *ngFor="let interaction of tick.interactions">
   <div class="interaction-container">
     <img [src]="this.icon(interaction) | async" *ngIf="this.shouldShowIcon() | async" onerror="this.style.opacity = 0;"

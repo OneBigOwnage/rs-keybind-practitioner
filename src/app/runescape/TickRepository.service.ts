@@ -1,10 +1,11 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, ReplaySubject, combineLatest } from "rxjs";
-import { Interaction, MissedAction, SuccessfullyPerformedAction, Tick, UnexpectedKeyPress } from "./Interactions";
+import { Interaction, MissedAction, PlannedTick, SuccessfullyPerformedAction, Tick, UnexpectedKeyPress } from "./Interactions";
 import { UserInput } from "./InputHandler.service";
-import { map, take } from "rxjs/operators";
+import { distinctUntilChanged, filter, map, take } from "rxjs/operators";
 import { AbilityRotation, AbilityRotationWithKeybinds } from "./rotation-repository.service";
 import { KeybindRepository } from "./keybind-repository.service";
+import { NonGCDActions } from "./RunescapeActions";
 
 @Injectable({ providedIn: "root" })
 export default class TickRepository {
@@ -21,7 +22,7 @@ export default class TickRepository {
     combineLatest([this.rotation, this.keybindRepository.keybinds$()]).subscribe(([rotation, keybinds]) => {
       this.rotationWithKeybinds.next(rotation.withKeybinds(keybinds));
     });
-   }
+  }
 
   public rotation$(): Observable<AbilityRotation> {
     return this.rotation.asObservable();
@@ -129,6 +130,39 @@ export default class TickRepository {
   public unexpectedCount$(): Observable<number> {
     return this.ticks.pipe(
       map(ticks => ticks.reduce((total: Interaction[], tick) => [...total, ...tick.interactions], []).filter(interaction => interaction instanceof UnexpectedKeyPress).length)
+    );
+  }
+
+  public GCDIncurringTicks$(): Observable<number[]> {
+    const gcdTicks: number[] = [];
+    let gcdCooldownRemaining = 0;
+
+    return this.rotation.pipe(map(rotation => {
+      rotation.ticks.forEach((tick: PlannedTick, index: number) => {
+        if (gcdCooldownRemaining > 1) {
+          gcdCooldownRemaining--;
+          return;
+        }
+
+        const hasGcdIncurringAction = tick.actions.some(action => !NonGCDActions.includes(action.name as any));
+
+        if (hasGcdIncurringAction) {
+          gcdTicks.push(index);
+          gcdCooldownRemaining = 3;
+        }
+      });
+
+      return gcdTicks;
+    }));
+  }
+
+  public triggerGCD$(): Observable<void> {
+    return combineLatest([this.ticks, this.GCDIncurringTicks$()]).pipe(
+      distinctUntilChanged(([aTicks, aGcdTicks], [bTicks, bGcdTicks]) => aTicks.length === bTicks.length),
+      filter(([ticks, gcdTicks]) => {
+        return gcdTicks.includes(ticks.length - 1);
+      }),
+      map(() => { })
     );
   }
 }
