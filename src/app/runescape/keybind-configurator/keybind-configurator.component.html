@@ -2,7 +2,7 @@
   <h1>Keybind Configurator</h1>
 
   <div class="configurator-grid">
-    <div *ngFor="let action of actions" class="keybind" [class.has-keybind]="(this.getKeybindForAction$(action) | async) !== ''"  [class.keybind-missing]="(this.getKeybindForAction$(action) | async) === ''">
+    <div *ngFor="let action of actions" class="keybind" [class.has-keybind]="(this.getKeybindForAction$(action) | async) !== ''"  [class.keybind-missing]="(this.getKeybindForAction$(action) | async) === ''" [class.keybind-used-in-current-rotation]="this.isUsedInCurrentRotation$(action) | async">
       <img [src]="'/assets/Runescape ability icons/' + action.split(' ').join('_') + '.png'"
         style="height: 60px; width: 60px; align-self: center;">
       <div>

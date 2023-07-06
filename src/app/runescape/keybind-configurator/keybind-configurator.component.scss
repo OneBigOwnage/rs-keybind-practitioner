@@ -33,7 +33,11 @@
       background-color: #99ff8b;
     }
 
-    &.keybind-missing {
+    &.keybind-missing:not(.keybind-used-in-current-rotation) {
+      background-color: #ffb34f;
+    }
+
+    &.keybind-missing.keybind-used-in-current-rotation {
       background-color: #ff8b8b;
     }
 
