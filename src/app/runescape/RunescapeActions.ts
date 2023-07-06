@@ -193,3 +193,60 @@ export const RunescapeActions = [
 ] as const;
 
 export type RunescapeAction = typeof RunescapeActions[number];
+
+export const NonGCDActions = [
+  "Quiver ammo slot 1",
+  "Quiver ammo slot 2",
+  "Aggression",
+  "Unsullied",
+  "Cease",
+  "Eat Food",
+  "Regenerate",
+  'Ingenunity of the Humans',
+  'Limitless',
+  "Slayer's Insight",
+  "Kuradal's Favour",
+  "Dragon Slayer",
+  "Demon Slayer",
+  "Undead Slayer",
+
+  // Melee
+  "Ek-ZekKil",
+  "Zaros godsword",
+  "Dark Shard of Leng",
+  "Dark Sliver of Leng",
+  "Kalphite defender",
+  "Masterwork Spear of Annihilation",
+  "Noxious scythe",
+  "Malevolent kiteshield",
+  "Divine spirit shield",
+
+  // Ranged
+  "Bow of the Last Guardian",
+  "Eldritch crossbow",
+  "Seren godbow",
+  "Blightbound crossbow",
+  "Off-hand Blightbound crossbow",
+  "Kalphite repriser",
+  "Vengeful kiteshield",
+  "Elysian spirit shield",
+
+  // Magic
+  "Fractured Staff of Armadyl",
+  "Inquisitor staff",
+  "Wand of the praesul",
+  "Imperium core",
+  "Kalphite rebounder",
+  "Merciless kiteshield",
+  "Arcane spirit shield",
+
+  // Spells
+  'Blood Blitz',
+  'Smoke Cloud',
+  'Ice Barrage',
+
+  // Special
+  'Target cycle'
+] as const;
+
+export type NonGCDAction = typeof NonGCDActions[number] & RunescapeAction;
