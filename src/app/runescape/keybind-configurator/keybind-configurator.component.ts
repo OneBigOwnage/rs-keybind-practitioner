@@ -23,8 +23,6 @@ export class KeybindConfiguratorComponent implements OnInit, OnDestroy {
         this.clearActionTarget();
       }
     });
-
-    console.log('constructor')
   }
 
   public ngOnInit(): void {
