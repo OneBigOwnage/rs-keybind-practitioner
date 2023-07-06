@@ -80,12 +80,12 @@
 
   <h1 style="margin-top: 50px; margin-left: 20px;">Rotation preview</h1>
   <div class="rotation-preview">
-    <div *ngFor="let tick of this.rotation.ticks; last as last" style="display: flex; align-items: center;" [style.display]="tick.actions.length === 0 ? 'none' : 'flex'">
-      <ng-container *ngIf="tick.actions.length > 0">
+    <div *ngFor="let tick of this.rotation.ticks; last as last" style="display: flex; align-items: center;">
+      <ng-container *ngIf="true">
         <div class="tick-preview">
           <img *ngFor="let action of tick.actions" [src]="action.iconURL()" width="30" height="30">
         </div>
-        <ng-container *ngIf="!last">
+        <ng-container *ngIf="!last && tick.actions.length > 0">
           <mat-icon>east</mat-icon>
         </ng-container>
       </ng-container>
