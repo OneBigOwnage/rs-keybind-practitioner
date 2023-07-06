@@ -52,9 +52,15 @@
           </div>
         </div>
 
-        <button (click)="this.showAddAction = tickIndex" *ngIf="this.showAddAction !== tickIndex" style="padding: 0;">
-          <mat-icon>add</mat-icon>
-        </button>
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+          <button (click)="this.showAddAction = tickIndex" *ngIf="this.showAddAction !== tickIndex" style="padding: 0; display: flex; align-items: center;">
+            <mat-icon>add</mat-icon> Action
+          </button>
+
+          <button (click)="this.addTick(tickIndex)" *ngIf="this.showAddAction !== tickIndex" style="padding: 0; display: flex; align-items: center;">
+            <mat-icon>add</mat-icon> Tick
+          </button>
+        </div>
 
         <div *ngIf="this.showAddAction === tickIndex" class="add-action">
           <select #selectRef (change)="this.onSelectionChange(tickIndex, selectRef)">
@@ -71,7 +77,7 @@
       <header>
         <h2>Add tick</h2>
       </header>
-      <button (click)="this.addTick()">
+      <button (click)="this.addTick(rotation.ticks.length - 1)">
         <mat-icon>add</mat-icon>
       </button>
     </div>

@@ -168,7 +168,7 @@ export class RotationEditorComponent implements OnInit {
     }));
   }
 
-  public addTick(): void {
+  public addTick(index: number): void {
     this.repo.rotations$().pipe(take(1)).subscribe(rotations => {
       let rotation = rotations.find(r => r.ID === this.rotation.ID);
 
@@ -176,7 +176,7 @@ export class RotationEditorComponent implements OnInit {
         throw new Error(`Could not find rotation with ID ${this.rotation.ID}`);
       }
 
-      rotation.ticks.push(new PlannedTick());
+      rotation.ticks.splice(index + 1, 0, new PlannedTick());
 
       this.repo.updateRotation(rotation);
     });
