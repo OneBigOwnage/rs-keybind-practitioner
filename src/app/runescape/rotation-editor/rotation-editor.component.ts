@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
 export class RotationEditorComponent implements OnInit {
 
   public rotationName: string = '';
-  public readonly allAvailableActions = Object.values(RunescapeActions);
+  public readonly allAvailableActions = Object.values(RunescapeActions).sort((a, b) => a.localeCompare(b));
 
   public showAddAction: number | undefined = undefined;
 
