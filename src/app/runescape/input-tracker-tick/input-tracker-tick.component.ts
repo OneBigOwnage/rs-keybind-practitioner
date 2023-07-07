@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Interaction, MissedAction, SuccessfullyPerformedAction, Tick, UnexpectedKeyPress } from '../Interactions';
+import { Interaction, MissedAction, ShouldPerformAction, SuccessfullyPerformedAction, Tick, UnexpectedKeyPress } from '../Interactions';
 import { KeybindRepository } from '../keybind-repository.service';
 import { Observable } from 'rxjs';
 import { of } from 'rxjs';
@@ -50,22 +50,28 @@ export class InputTrackerTickComponent implements OnInit {
     return of(undefined);
   }
 
-  public shouldShowIcon(): Observable<boolean> {
-    if (this.context === 'PREVIOUS') {
-      return of(true);
-    }
-
-    return this.game.difficulty$().pipe(map(difficulty => difficulty !== 'EXPERT'));
-  }
-
-  public shouldShowKeybind(): Observable<boolean> {
+  public shouldShowIcon(interaction: Interaction): Observable<boolean> {
     if (this.context === 'PREVIOUS') {
       return of(true);
     }
 
     return this.game.difficulty$().pipe(map(difficulty => {
       if (this.context === 'CURRENT') {
-        return difficulty !== 'EXPERT';
+        return difficulty !== 'EXPERT' || !(interaction instanceof ShouldPerformAction);
+      }
+
+      return difficulty !== 'EXPERT'
+    }));
+  }
+
+  public shouldShowKeybind(interaction: Interaction): Observable<boolean> {
+    if (this.context === 'PREVIOUS') {
+      return of(true);
+    }
+
+    return this.game.difficulty$().pipe(map(difficulty => {
+      if (this.context === 'CURRENT') {
+        return difficulty !== 'EXPERT' || !(interaction instanceof ShouldPerformAction);
       }
 
       return difficulty === 'BEGINNER';
